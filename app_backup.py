@@ -19,7 +19,7 @@ st.set_page_config(page_title="Leasingrechner", page_icon="🚗", layout="wide")
 # Konfiguration
 # --------------------------
 MAX_CARS = 10
-DEFAULT_PRICES = {"E5": 1.89, "E10": 1.79, "Diesel": 1.75, "Strom": 0.35}
+DEFAULT_PRICES = {"Super E5": 1.89, "Super E10": 1.79, "Super+": 2.00, "Diesel": 1.75, "Strom": 0.35}
 
 # --------------------------
 # Daten laden
@@ -79,7 +79,7 @@ def monthly_consumption_cost(fuel_kind: str, l_per_100: float, kwh_per_100: floa
     km_m = monthly_distance(km_per_year)
     cost = 0.0
     if l_per_100 and l_per_100 > 0:
-        fk = fuel_kind if fuel_kind in ("E5", "E10", "Diesel") else "E5"
+        fk = fuel_kind if fuel_kind in ("Super E5", "Super E10", "Super+", "Diesel") else "Super E5"
         pl = float(prices.get(fk, 0))
         cost += (km_m * l_per_100 / 100.0) * pl
     if kwh_per_100 and kwh_per_100 > 0:
@@ -92,14 +92,15 @@ def monthly_consumption_cost(fuel_kind: str, l_per_100: float, kwh_per_100: floa
 # --------------------------
 st.title("🚗 Mitarbeiter-Leasingrechner")
 
-cols = st.columns(4)
+cols = st.columns(5)
 if "energy_prices" not in st.session_state:
     st.session_state.energy_prices = DEFAULT_PRICES.copy()
 ep = st.session_state.energy_prices
-ep["E5"] = cols[0].number_input("E5 €/l", 0.5, 4.0, ep["E5"], 0.01)
-ep["E10"] = cols[1].number_input("E10 €/l", 0.5, 4.0, ep["E10"], 0.01)
-ep["Diesel"] = cols[2].number_input("Diesel €/l", 0.5, 4.0, ep["Diesel"], 0.01)
-ep["Strom"] = cols[3].number_input("Strom €/kWh", 0.05, 2.0, ep["Strom"], 0.01)
+ep["Super E5"] = cols[0].number_input("Super E5 €/l", 0.5, 4.0, ep["Super E5"], 0.01)
+ep["Super E10"] = cols[1].number_input("Super E10 €/l", 0.5, 4.0, ep["Super E10"], 0.01)
+ep["Super+"] = cols[2].number_input("Super+ €/l", 0.5, 4.0, ep["Super+"], 0.01)
+ep["Diesel"] = cols[3].number_input("Diesel €/l", 0.5, 4.0, ep["Diesel"], 0.01)
+ep["Strom"] = cols[4].number_input("Strom €/kWh", 0.05, 2.0, ep["Strom"], 0.01)
 
 # --------------------------
 # Datenquellen
@@ -156,7 +157,7 @@ def render_car_slot(slot_idx: int, container):
 
         km_year = st.number_input("Freikilometer/Jahr", 0, 100000, default_km, 1000, key=key+"km")
         uvp = st.number_input("UVP €", 1000, 300000, 30000, 500, key=key+"uvp")
-        fuel_kind = st.selectbox("Kraftstoff", ["E5", "E10", "Diesel", "Elektro", "Hybrid"], key=key+"fuel")
+        fuel_kind = st.selectbox("Kraftstoff", ["Super E5", "Super E10", "Super+", "Diesel", "Elektro", "Hybrid"], key=key+"fuel")
 
         l100, kwh100 = 0.0, 0.0
         if fuel_kind == "Elektro":

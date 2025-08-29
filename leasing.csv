@@ -1,9 +1,9 @@
-Laufzeit;Freikilometer;Leasingrate;Tankguthaben;Bedingung
-6;15000;0.9;0;Verbrenner
-12;30000;1.0;0;Verbrenner
-6;15000;0.8;0;Elektro/Hybrid
-12;30000;0.9;0;Elektro/Hybrid
-6;15000;1.0;90;Caddy
-12;30000;1.0;180;Caddy
-6;15000;1.0;160;Multivan
-12;30000;1.0;320;Multivan
+Leasingoption;Leasingrate;Laufzeit;Freikilometer;Tankguthaben;Bedingung
+0.9 % | 6 Monate  | 15000 km | 0€ (Prepaid);0.9;6;15000;0;Verbrenner
+1.0 % | 12 Monate | 30000 km | 0€ (Prepaid);1.0;12;30000;0;Verbrenner
+0.8 % | 6 Monate  | 15000 km | 0€ (Prepaid);0.8;6;15000;0;Elektro/Hybrid
+0.9 % | 12 Monate | 30000 km | 0€ (Prepaid);0.9;12;30000;0;Elektro/Hybrid
+1.0 % | 6 Monate  | 15000 km | 90€ (Prepaid);1.0;6;15000;90;Caddy
+1.0 % | 12 Monate | 30000 km | 180€ (Prepaid);1.0;12;30000;180;Caddy
+1.0 % | 6 Monate  | 15000 km | 160€ (Prepaid);1.0;6;15000;160;Multivan
+1.0 % | 12 Monate | 30000 km | 320€ (Prepaid);1.0;12;30000;320;Multivan

@@ -1,228 +1,237 @@
-Modell;Ausstattungslinie;Motor;Leistung;Getriebe
-Polo;R-Line;1.0 TSI;85;7-Gang-DSG
-Polo;GTI;2.0 TSI;152;7-Gang-DSG
-Polo;Energy;1.0 TSI;85;7-Gang-DSG
-T-Cross;Life;1.0 TSI;70;5-Gang
-T-Cross;Life;1.0 TSI;85;6-Gang
-T-Cross;Life;1.0 TSI;85;7-Gang-DSG
-T-Cross;Life;1.5 TSI;110;7-Gang-DSG
-T-Cross;Style;1.0 TSI;85;6-Gang
-T-Cross;Style;1.0 TSI;85;7-Gang-DSG
-T-Cross;Style;1.5 TSI;110;7-Gang-DSG
-T-Cross;R-Line;1.0 TSI;85;6-Gang
-T-Cross;R-Line;1.0 TSI;85;7-Gang-DSG
-T-Cross;R-Line;1.5 TSI;110;7-Gang-DSG
-T-Cross;Energy;1.0 TSI;85;6-Gang
-T-Cross;Energy;1.0 TSI;85;7-Gang-DSG
-T-Cross;Energy;1.5 TSI;110;7-Gang-DSG
-Taigo;Life;1.0 TSI;70;5-Gang
-Taigo;Life;1.0 TSI;85;6-Gang
-Taigo;Life;1.0 TSI;85;7-Gang-DSG
-Taigo;Style;1.0 TSI;85;6-Gang
-Taigo;Style;1.0 TSI;85;7-Gang-DSG
-Taigo;Style;1.5 TSI;110;7-Gang-DSG
-Taigo;R-Line;1.0 TSI;85;6-Gang
-Taigo;R-Line;1.0 TSI;85;7-Gang-DSG
-Taigo;R-Line;1.5 TSI;110;7-Gang-DSG
-Taigo;Energy;1.0 TSI;85;6-Gang
-Taigo;Energy;1.0 TSI;85;7-Gang-DSG
-Taigo;Energy;1.5 TSI;110;7-Gang-DSG
-T-Roc;Life;1.5 eTSI;85;7-Gang-DSG
-T-Roc;Life;1.5 eTSI;110;7-Gang-DSG
-T-Roc;Style;1.5 eTSI;85;7-Gang-DSG
-T-Roc;Style;1.5 eTSI;110;7-Gang-DSG
-T-Roc;R-Line;1.5 eTSI;110;7-Gang-DSG
-T-Roc Cabriolet;Style;1.0 TSI;85;6-Gang
-T-Roc Cabriolet;Style;1.5 TSI;110;6-Gang
-T-Roc Cabriolet;Style;1.5 TSI;110;7-Gang-DSG
-T-Roc Cabriolet;R-Line;1.5 TSI;110;6-Gang
-T-Roc Cabriolet;R-Line;1.5 TSI;110;7-Gang-DSG
-T-Roc Cabriolet;Energy;1.0 TSI;85;6-Gang
-T-Roc Cabriolet;Energy;1.5 TSI;110;6-Gang
-T-Roc Cabriolet;Energy;1.5 TSI;110;7-Gang-DSG
-Golf;Life;1.5 TSI;85;6-Gang
-Golf;Life;1.5 TSI;110;6-Gang
-Golf;Life;2.0 TDI;85;6-Gang
-Golf;Life;2.0 TDI;110;7-Gang-DSG
-Golf;Life;1.5 eTSI;85;7-Gang-DSG
-Golf;Life;1.5 eTSI;110;7-Gang-DSG
-Golf;Style;1.5 TSI;110;6-Gang
-Golf;Style;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Golf;Style;2.0 TDI;110;7-Gang-DSG
-Golf;Style;1.5 eTSI;110;7-Gang-DSG
-Golf;R-Line;1.5 TSI;110;6-Gang
-Golf;R-Line;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Golf;R-Line;2.0 TDI;110;7-Gang-DSG
-Golf;R-Line;1.5 eTSI;110;7-Gang-DSG
-Golf;GTE;1.5 eHybrid;130;6-Gang-DSG
-Golf;GTI;2.0 TSI;195;7-Gang-DSG
-Golf;GTI Clubsport;2.0 TSI;221;7-Gang-DSG
-Golf;R;2.0 TSI | 4MOTION;245;7-Gang-DSG
-Golf;Energy;1.5 TSI;110;6-Gang
-Golf;Energy;2.0 TDI;85;6-Gang
-Golf;Energy;2.0 TDI;110;7-Gang-DSG
-Golf;Energy;1.5 eTSI;85;7-Gang-DSG
-Golf;Energy;1.5 eTSI;110;7-Gang-DSG
-Golf;Energy;1.5 eHybrid;110;6-Gang-DSG
-Golf Variant;Style;1.5 TSI;110;6-Gang
-Golf Variant;Style;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Golf Variant;Style;2.0 TDI;110;7-Gang-DSG
-Golf Variant;Style;1.5 eTSI;110;7-Gang-DSG
-Golf Variant;R-Line;1.5 TSI;110;6-Gang
-Golf Variant;R-Line;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Golf Variant;R-Line;2.0 TDI;110;7-Gang-DSG
-Golf Variant;R-Line;1.5 eTSI;110;7-Gang-DSG
-Golf Variant;R;2.0 TSI | 4MOTION;245;7-Gang-DSG
-Golf Variant;Energy;1.5 TSI;85;6-Gang
-Golf Variant;Energy;1.5 TSI;110;6-Gang
-Golf Variant;Energy;2.0 TDI;85;6-Gang
-Golf Variant;Energy;2.0 TDI;110;7-Gang-DSG
-Golf Variant;Energy;1.5 eTSI;85;7-Gang-DSG
-Golf Variant;Energy;1.5 eTSI;110;7-Gang-DSG
-Touran;Comfortline;1.5 TSI;110;6-Gang
-Touran;Comfortline;1.5 TSI;110;7-Gang-DSG
-Touran;Comfortline;2.0 TDI;90;6-Gang
-Touran;Comfortline;2.0 TDI;110;7-Gang-DSG
-Touran;Highline;1.5 TSI;110;6-Gang
-Touran;Highline;1.5 TSI;110;7-Gang-DSG
-Touran;Highline;2.0 TDI;110;7-Gang-DSG
-Touran;Energy;1.5 TSI;110;6-Gang
-Touran;Energy;1.5 TSI;110;7-Gang-DSG
-Touran;Energy;2.0 TDI;90;6-Gang
-Touran;Energy;2.0 TDI;110;7-Gang-DSG
-Tiguan;Life;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tiguan;Life;2.0 TDI;110;7-Gang-DSG
-Tiguan;Life;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tiguan;Life;1.5 eTSI;96;7-Gang-DSG
-Tiguan;Life;1.5 eTSI;110;7-Gang-DSG
-Tiguan;Elegance;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tiguan;Elegance;2.0 TDI;110;7-Gang-DSG
-Tiguan;Elegance;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tiguan;Elegance;1.5 eTSI;110;7-Gang-DSG
-Tiguan;Elegance;1.5 eHybrid;110;6-Gang-DSG
-Tiguan;Elegance;1.5 eHybrid;130;6-Gang-DSG
-Tiguan;R-Line;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tiguan;R-Line;2.0 TSI | 4MOTION;195;7-Gang-DSG
-Tiguan;R-Line;2.0 TDI;110;7-Gang-DSG
-Tiguan;R-Line;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tiguan;R-Line;1.5 eTSI;110;7-Gang-DSG
-Tiguan;R-Line;1.5 eHybrid;110;6-Gang-DSG
-Tiguan;R-Line;1.5 eHybrid;130;6-Gang-DSG
-Tiguan;Energy;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tiguan;Energy;2.0 TDI;110;7-Gang-DSG
-Tiguan;Energy;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tiguan;Energy;1.5 eTSI;96;7-Gang-DSG
-Tiguan;Energy;1.5 eTSI;110;7-Gang-DSG
-Tiguan;Energy;1.5 eHybrid;110;6-Gang-DSG
-Tayron;Life;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tayron;Life;2.0 TDI;110;7-Gang-DSG
-Tayron;Life;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tayron;Life;1.5 eTSI;110;7-Gang-DSG
-Tayron;Elegance;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tayron;Elegance;2.0 TDI;110;7-Gang-DSG
-Tayron;Elegance;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Tayron;Elegance;1.5 eTSI;110;7-Gang-DSG
-Tayron;R-Line;2.0 TSI | 4MOTION;150;7-Gang-DSG
-Tayron;R-Line;2.0 TSI | 4MOTION;195;7-Gang-DSG
-Tayron;R-Line;2.0 TDI;110;7-Gang-DSG
-Tayron;R-Line;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Passat;Business;2.0 TDI;90;7-Gang-DSG
-Passat;Business;2.0 TDI;110;7-Gang-DSG
-Passat;Business;1.5 eTSI;110;7-Gang-DSG
-Passat;Business;1.5 eHybrid;110;6-Gang-DSG
-Passat;Business;1.5 eHybrid;130;6-Gang-DSG
-Passat;Elegance;2.0 TDI;110;7-Gang-DSG
-Passat;Elegance;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Passat;Elegance;1.5 eHybrid;110;6-Gang-DSG
-Passat;Elegance;1.5 eHybrid;130;6-Gang-DSG
-Passat;R-Line;2.0 TSI | 4MOTION;195;7-Gang-DSG
-Passat;R-Line;2.0 TDI;110;7-Gang-DSG
-Passat;R-Line;2.0 TDI | 4MOTION;142;7-Gang-DSG
-Passat;R-Line;1.5 eHybrid;130;6-Gang-DSG
-Touareg;Elegance;3.0 V6 TDI | 4MOTION;170;8-Gang-Automatik
-Touareg;Elegance;3.0 V6 TDI | 4MOTION;210;8-Gang-Automatik
-Touareg;R-Line;3.0 V6 TDI | 4MOTION;170;8-Gang-Automatik
-Touareg;R-Line;3.0 V6 TDI | 4MOTION;210;8-Gang-Automatik
-ID.4;Pro;77 kWh;210;1-Gang-DSG
-ID.4;Pro;77 kWh | 4MOTION;210;1-Gang-DSG
-ID.4;GTX;79 kWh | 4MOTION;250;1-Gang-DSG
-ID.5;Pro;77 kWh;210;1-Gang-DSG
-ID.5;GTX;79 kWh | 4MOTION;250;1-Gang-DSG
-ID.7;Pro S;86 kWh;210;1-Gang-DSG
-ID.7 Tourer;Pro S;86 kWh;210;1-Gang-DSG
-Caddy;Caddy;2.0 TDI;75;6-Gang
-Caddy;Caddy;2.0 TDI;90;7-Gang-DSG
-Caddy;Caddy;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Caddy;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Caddy;1.5 TSI;85;6-Gang
-Caddy;Caddy;1.5 TSI;85;7-Gang-DSG
-Caddy;Caddy Maxi;2.0 TDI;75;6-Gang
-Caddy;Caddy Maxi;2.0 TDI ;90;7-Gang-DSG
-Caddy;Caddy Maxi;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Caddy Maxi;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Caddy Maxi;1.5 TSI;85;6-Gang
-Caddy;Caddy Maxi;1.5 TSI;85;7-Gang-DSG
-Caddy;Life;2.0 TDI;75;6-Gang
-Caddy;Life;2.0 TDI ;90;7-Gang-DSG
-Caddy;Life;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Life;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Life;1.5 TSI;85;6-Gang
-Caddy;Life;1.5 TSI;85;7-Gang-DSG
-Caddy;Life Maxi;2.0 TDI;75;6-Gang
-Caddy;Life Maxi;2.0 TDI ;90;7-Gang-DSG
-Caddy;Life Maxi;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Life Maxi;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Life Maxi;1.5 TSI;85;6-Gang
-Caddy;Life Maxi;1.5 TSI;85;7-Gang-DSG
-Caddy;Style;2.0 TDI ;90;7-Gang-DSG
-Caddy;Style;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Style;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Style;1.5 TSI;85;6-Gang
-Caddy;Style;1.5 TSI;85;7-Gang-DSG
-Caddy;Style Maxi;2.0 TDI ;90;7-Gang-DSG
-Caddy;Style Maxi;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Style Maxi;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Style Maxi;1.5 TSI;85;6-Gang
-Caddy;Style Maxi;1.5 TSI;85;7-Gang-DSG
-Caddy;Energy;2.0 TDI;75;6-Gang
-Caddy;Energy;2.0 TDI ;90;7-Gang-DSG
-Caddy;Energy;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Energy;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Energy;1.5 TSI;85;6-Gang
-Caddy;Energy;1.5 TSI;85;7-Gang-DSG
-Caddy;Energy Maxi;2.0 TDI;75;6-Gang
-Caddy;Energy Maxi;2.0 TDI ;90;7-Gang-DSG
-Caddy;Energy Maxi;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;Energy Maxi;1.5 eHybrid;85;6-Gang-DSG
-Caddy;Energy Maxi;1.5 TSI;85;6-Gang
-Caddy;Energy Maxi;1.5 TSI;85;7-Gang-DSG
-Caddy;PanAmericana;2.0 TDI;75;6-Gang
-Caddy;PanAmericana;2.0 TDI ;90;7-Gang-DSG
-Caddy;PanAmericana;2.0 TDI | 4MOTION;90;6-Gang
-Caddy;PanAmericana;1.5 eHybrid;85;6-Gang-DSG
-Caddy;PanAmericana;1.5 TSI;85;6-Gang
-Caddy;PanAmericana;1.5 TSI;85;7-Gang-DSG
-Multivan;Multivan;2.0 TDI | KÜ;110;7-Gang-DSG
-Multivan;Multivan;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Multivan;2.0 TSI | KÜ;150;7-Gang-DSG
-Multivan;Multivan;2.0 TDI | LÜ;110;7-Gang-DSG
-Multivan;Multivan;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Multivan;2.0 TSI | LÜ;150;7-Gang-DSG
-Multivan;Life;2.0 TDI | KÜ;110;7-Gang-DSG
-Multivan;Life;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Life;2.0 TSI | KÜ;150;7-Gang-DSG
-Multivan;Life;2.0 TDI | LÜ;110;7-Gang-DSG
-Multivan;Life;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Life;2.0 TSI | LÜ;150;7-Gang-DSG
-Multivan;Style;2.0 TDI | KÜ;110;7-Gang-DSG
-Multivan;Style;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Style;2.0 TSI | KÜ;150;7-Gang-DSG
-Multivan;Style;2.0 TDI | LÜ;110;7-Gang-DSG
-Multivan;Style;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Style;2.0 TSI | LÜ;150;7-Gang-DSG
-Multivan;Energy;2.0 TDI | KÜ;110;7-Gang-DSG
-Multivan;Energy;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Energy;2.0 TSI | KÜ;150;7-Gang-DSG
-Multivan;Energy;2.0 TDI | LÜ;110;7-Gang-DSG
-Multivan;Energy;1.5 eHybrid | 19.7 kWh | 4MOTION;130;6-Gang-DSG
-Multivan;Energy;2.0 TSI | LÜ;150;7-Gang-DSG
+Modell;Ausstattungslinie;Motor;Kategorie;Kraftstoff;l/100km;kWh/100km
+Polo;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.6;0.0
+Polo;GTI;2.0 TSI | 152 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0
+Polo;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.6;0.0
+T-Cross;Life;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.5;0.0
+T-Cross;Life;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0
+T-Cross;Life;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+T-Cross;Life;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0
+T-Cross;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0
+T-Cross;Style;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+T-Cross;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+T-Cross;R-Line;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0
+T-Cross;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+T-Cross;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+T-Cross;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+T-Cross;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.8;0.0
+T-Cross;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+Taigo;Life;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.4;0.0
+Taigo;Life;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0
+Taigo;Life;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.6;0.0
+Taigo;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0
+Taigo;Style;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+Taigo;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+Taigo;R-Line;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0
+Taigo;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+Taigo;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+Taigo;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0
+Taigo;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0
+Taigo;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+T-Roc;Life;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0
+T-Roc;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0
+T-Roc;Style;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+T-Roc;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+T-Roc;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0
+T-Roc Cabriolet;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.0;0.0
+T-Roc Cabriolet;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.3;0.0
+T-Roc Cabriolet;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0
+T-Roc Cabriolet;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.2;0.0
+T-Roc Cabriolet;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0
+T-Roc Cabriolet;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.0;0.0
+T-Roc Cabriolet;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.3;0.0
+T-Roc Cabriolet;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0
+Golf;Life;1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0
+Golf;Life;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf;Life;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.3;0.0
+Golf;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0
+Golf;Life;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0
+Golf;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.3;0.0
+Golf;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf;Style;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.0;0.0
+Golf;Style;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0
+Golf;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0
+Golf;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.0;0.0
+Golf;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0
+Golf;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.3;0.0
+Golf;GTE;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;15.9
+Golf;GTI;2.0 TSI | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;7.1;0.0
+Golf;GTI Clubsport;2.0 TSI | 221 kW | 7-Gang-DSG;Verbrenner;Benzin;7.3;0.0
+Golf;R;2.0 TSI | 4MOTION | 245 kW | 7-Gang-DSG;Verbrenner;Benzin;8.2;0.0
+Golf;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf;Energy;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.3;0.0
+Golf;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.5;0.0
+Golf;Energy;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.1;0.0
+Golf;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.1;0.0
+Golf;Energy;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;14.7
+Golf Variant;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf Variant;Style;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.0;0.0
+Golf Variant;Style;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0
+Golf Variant;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0
+Golf Variant;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0
+Golf Variant;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.0;0.0
+Golf Variant;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.8;0.0
+Golf Variant;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.4;0.0
+Golf Variant;R;2.0 TSI | 4MOTION | 245 kW | 7-Gang-DSG;Verbrenner;Benzin;8.2;0.0
+Golf Variant;Energy;1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0
+Golf Variant;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0
+Golf Variant;Energy;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.3;0.0
+Golf Variant;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.7;0.0
+Golf Variant;Energy;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.0;0.0
+Golf Variant;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0
+Touran;Comfortline;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0
+Touran;Comfortline;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0
+Touran;Comfortline;2.0 TDI | 90 kW | 6-Gang;Verbrenner;Diesel;5.5;0.0
+Touran;Comfortline;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0
+Touran;Highline;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.7;0.0
+Touran;Highline;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0
+Touran;Highline;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0
+Touran;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0
+Touran;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0
+Touran;Energy;2.0 TDI | 90 kW | 6-Gang;Verbrenner;Diesel;5.4;0.0
+Touran;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.4;0.0
+Tiguan;Life;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0
+Tiguan;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.3;0.0
+Tiguan;Life;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.2;0.0
+Tiguan;Life;1.5 eTSI | 96 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0
+Tiguan;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0
+Tiguan;Elegance;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0
+Tiguan;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0
+Tiguan;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.4;0.0
+Tiguan;Elegance;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+Tiguan;Elegance;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;17.9
+Tiguan;Elegance;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;17.9
+Tiguan;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.8;0.0
+Tiguan;R-Line;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.4;0.0
+Tiguan;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0
+Tiguan;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.4;0.0
+Tiguan;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+Tiguan;R-Line;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;17.8
+Tiguan;R-Line;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;17.6
+Tiguan;Energy;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.5;0.0
+Tiguan;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0
+Tiguan;Energy;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.2;0.0
+Tiguan;Energy;1.5 eTSI | 96 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0
+Tiguan;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+Tiguan;Energy;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;17.0
+Tayron;Life;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0
+Tayron;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.4;0.0
+Tayron;Life;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.3;0.0
+Tayron;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+Tayron;Elegance;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.7;0.0
+Tayron;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0
+Tayron;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0
+Tayron;Elegance;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0
+Tayron;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.8;0.0
+Tayron;R-Line;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.5;0.0
+Tayron;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0
+Tayron;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0
+Passat;Business;2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;4.9;0.0
+Passat;Business;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.0;0.0
+Passat;Business;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.4;0.0
+Passat;Business;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;16.2
+Passat;Business;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;16.3
+Passat;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.0;0.0
+Passat;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0
+Passat;Elegance;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;16.2
+Passat;Elegance;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.3;16.3
+Passat;R-Line;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.0;0.0
+Passat;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.2;0.0
+Passat;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;5.9;0.0
+Passat;R-Line;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.4;16.8
+Touareg;Elegance;3.0 V6 TDI | 4MOTION | 170 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.3;0.0
+Touareg;Elegance;3.0 V6 TDI | 4MOTION | 210 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.2;0.0
+Touareg;R-Line;3.0 V6 TDI | 4MOTION | 170 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.3;0.0
+Touareg;R-Line;3.0 V6 TDI | 4MOTION | 210 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.3;0.0
+ID.4;Pro;77 kWh | 210 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;16.9
+ID.4;Pro;77 kWh | 4MOTION | 210 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;16.7
+ID.4;GTX;79 kWh | 4MOTION | 250 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;17.2
+ID.5;Pro;77 kWh | 210 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;16.8
+ID.5;GTX;79 kWh | 4MOTION | 250 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;16.9
+ID.7;Pro S;86 kWh | 210 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;14.0
+ID.7 Tourer;Pro S;86 kWh | 210 kW | 1-Gang-DSG;Elektro/Hybrid;Elektro;0.0;14.3
+Caddy;Caddy;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.3;0.0
+Caddy;Caddy;2.0 TDI | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.5;0.0
+Caddy;Caddy;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.0;0.0
+Caddy;Caddy;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;18.6
+Caddy;Caddy;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.5;0.0
+Caddy;Caddy;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.6;0.0
+Caddy;Caddy Maxi;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.5;0.0
+Caddy;Caddy Maxi;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.6;0.0
+Caddy;Caddy Maxi;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.2;0.0
+Caddy;Caddy Maxi;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;19.0
+Caddy;Caddy Maxi;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.7;0.0
+Caddy;Caddy Maxi;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.8;0.0
+Caddy;Life;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.4;0.0
+Caddy;Life;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.5;0.0
+Caddy;Life;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.1;0.0
+Caddy;Life;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;18.6
+Caddy;Life;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.5;0.0
+Caddy;Life;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.6;0.0
+Caddy;Life Maxi;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.5;0.0
+Caddy;Life Maxi;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.7;0.0
+Caddy;Life Maxi;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.3;0.0
+Caddy;Life Maxi;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;19.1
+Caddy;Life Maxi;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.7;0.0
+Caddy;Life Maxi;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.9;0.0
+Caddy;Style;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.6;0.0
+Caddy;Style;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.1;0.0
+Caddy;Style;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;18.7
+Caddy;Style;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.6;0.0
+Caddy;Style;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.7;0.0
+Caddy;Style Maxi;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.7;0.0
+Caddy;Style Maxi;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.3;0.0
+Caddy;Style Maxi;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;19.1
+Caddy;Style Maxi;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.8;0.0
+Caddy;Style Maxi;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.9;0.0
+Caddy;Energy;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.4;0.0
+Caddy;Energy;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.6;0.0
+Caddy;Energy;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.1;0.0
+Caddy;Energy;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;18.7
+Caddy;Energy;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.6;0.0
+Caddy;Energy;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.7;0.0
+Caddy;Energy Maxi;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.6;0.0
+Caddy;Energy Maxi;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.7;0.0
+Caddy;Energy Maxi;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.3;0.0
+Caddy;Energy Maxi;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;19.1
+Caddy;Energy Maxi;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.8;0.0
+Caddy;Energy Maxi;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.9;0.0
+Caddy;PanAmericana;2.0 TDI | 75 kW | 6-Gang;Caddy;Diesel;5.4;0.0
+Caddy;PanAmericana;2.0 TDI  | 90 kW | 7-Gang-DSG;Caddy;Diesel;5.6;0.0
+Caddy;PanAmericana;2.0 TDI | 4MOTION | 90 kW | 6-Gang;Caddy;Diesel;6.1;0.0
+Caddy;PanAmericana;1.5 eHybrid | 85 kW | 6-Gang-DSG;Caddy;Hybrid;0.5;18.7
+Caddy;PanAmericana;1.5 TSI | 85 kW | 6-Gang;Caddy;Benzin;6.6;0.0
+Caddy;PanAmericana;1.5 TSI | 85 kW | 7-Gang-DSG;Caddy;Benzin;6.7;0.0
+Multivan;Multivan;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.5;0.0
+Multivan;Multivan;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Multivan;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Multivan;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.5;0.0
+Multivan;Multivan;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.4
+Multivan;Multivan;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Life;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.5;0.0
+Multivan;Life;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Life;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Life;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.6;0.0
+Multivan;Life;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Life;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Style;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.5;0.0
+Multivan;Style;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.4
+Multivan;Style;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.8;0.0
+Multivan;Style;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.5;0.0
+Multivan;Style;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Style;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Energy;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.6;0.0
+Multivan;Energy;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Energy;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+Multivan;Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Multivan;Diesel;6.6;0.0
+Multivan;Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Multivan;Hybrid;0.9;22.5
+Multivan;Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Multivan;Benzin;8.9;0.0
+California;Beach Camper Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.8;0.0
+California;Beach Camper Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;0.9;23.1
+California;Beach Camper Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.2;0.0
+California;Coast Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.9;0.0
+California;Coast Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.0;23.2
+California;Coast Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.3;0.0
+California;Ocean Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.9;0.0
+California;Ocean Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.0;23.3
+California;Ocean Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.3;0.0

@@ -1,0 +1,16 @@
+[theme]
+base = "dark"
+
+[theme.light]
+primaryColor = "#1E88E5"
+backgroundColor = "#FFFFFF"
+textColor = "#000000"
+
+[theme.dark]
+primaryColor = "#BB86FC"
+backgroundColor = "#121212"
+textColor = "#FFFFFF"
+
+[theme.dark.sidebar]
+backgroundColor = "#181818"
+borderColor = "#333333"

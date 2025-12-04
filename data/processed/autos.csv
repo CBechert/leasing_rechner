@@ -1,0 +1,251 @@
+Modell;Ausstattungslinie;Motor;Kategorie;Kraftstoff;l/100km;kWh/100km;Preis
+Caddy;Caddy;KR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.5;0.0;33367.60
+Caddy;Caddy;KR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.6;0.0;35985.60
+Caddy;Caddy;KR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.7;14.4;46029.20
+Caddy;Caddy;KR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.0;0.0;40596.85
+Caddy;Caddy;KR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.3;0.0;35271.60
+Caddy;Caddy;KR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;39418.75
+Caddy;Caddy Maxi;LR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.7;0.0;36729.35
+Caddy;Caddy Maxi;LR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.8;0.0;39347.35
+Caddy;Caddy Maxi;LR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.9;14.6;49908.60
+Caddy;Caddy Maxi;LR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.2;0.0;44410.80
+Caddy;Caddy Maxi;LR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.5;0.0;38728.55
+Caddy;Caddy Maxi;LR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;42780.50
+Caddy;Energy;KR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0;38288.25
+Caddy;Energy;KR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0;40932.43
+Caddy;Energy;KR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.8;14.5;50074.01
+Caddy;Energy;KR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.1;0.0;45517.50
+Caddy;Energy;KR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.4;0.0;40287.45
+Caddy;Energy;KR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;44365.58
+Caddy;Energy Maxi;LR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.8;0.0;41328.70
+Caddy;Energy Maxi;LR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;43978.83
+Caddy;Energy Maxi;LR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.9;14.7;53614.26
+Caddy;Energy Maxi;LR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.3;0.0;48563.90
+Caddy;Energy Maxi;LR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.6;0.0;43333.85
+Caddy;Energy Maxi;LR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0;47411.98
+Caddy;Life;KR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.5;0.0;34872.95
+Caddy;Life;KR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.6;0.0;37490.95
+Caddy;Life;KR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.8;14.4;47498.85
+Caddy;Life;KR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.1;0.0;42102.20
+Caddy;Life;KR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.4;0.0;36872.15
+Caddy;Life;KR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;40924.10
+Caddy;Life Maxi;LR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.7;0.0;37913.40
+Caddy;Life Maxi;LR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;40537.35
+Caddy;Life Maxi;LR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.9;14.7;51039.10
+Caddy;Life Maxi;LR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.3;0.0;45588.90
+Caddy;Life Maxi;LR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.5;0.0;39918.55
+Caddy;Life Maxi;LR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0;43970.50
+Caddy;PanAmericana;KR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0;39180.75
+Caddy;PanAmericana;KR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0;41917.75
+Caddy;PanAmericana;KR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.8;14.5;52068.45
+Caddy;PanAmericana;KR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.1;0.0;46410.00
+Caddy;PanAmericana;KR | 2.0 TDI | 75 kW | 6-Gang;Verbrenner;Diesel;5.4;0.0;41179.95
+Caddy;PanAmericana;KR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;45350.90
+Caddy;Style;KR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0;38895.15
+Caddy;Style;KR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0;41394.15
+Caddy;Style;KR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.8;14.5;50646.40
+Caddy;Style;KR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.1;0.0;46124.40
+Caddy;Style;KR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;44827.30
+Caddy;Style Maxi;LR | 1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.8;0.0;41513.15
+Caddy;Style Maxi;LR | 1.5 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;44012.15
+Caddy;Style Maxi;LR | 1.5 eHybrid | 85 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.9;14.7;53210.85
+Caddy;Style Maxi;LR | 2.0 TDI | 4MOTION | 90 kW | 6-Gang;Verbrenner;Diesel;6.3;0.0;48742.40
+Caddy;Style Maxi;LR | 2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0;47445.30
+California;Coast;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;3.0;16.2;93529.24
+California;Coast;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.8;0.0;78154.44
+California;Coast;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.2;0.0;79439.64
+California;Coast Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;3.1;16.2;98197.61
+California;Coast Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.9;0.0;84514.99
+California;Coast Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.3;0.0;84744.66
+California;Ocean;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;3.0;16.2;99574.44
+California;Ocean;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.8;0.0;84681.59
+California;Ocean;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.2;0.0;85466.99
+California;Ocean Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;3.1;16.3;103775.14
+California;Ocean Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.9;0.0;90084.19
+California;Ocean Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.3;0.0;90310.29
+Golf;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;35715.00
+Golf;Energy;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.1;12.2;45325.00
+Golf;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.1;0.0;38265.00
+Golf;Energy;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.1;0.0;36015.00
+Golf;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.5;0.0;41415.00
+Golf;Energy;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.4;0.0;37065.00
+Golf;GTE;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.3;12.8;48490.00
+Golf;GTI;2.0 TSI | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;7.0;0.0;46250.00
+Golf;GTI Clubsport;2.0 TSI | 221 kW | 7-Gang-DSG;Verbrenner;Benzin;7.3;0.0;49820.00
+Golf;Life;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0;33890.00
+Golf;Life;1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;31640.00
+Golf;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;36440.00
+Golf;Life;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;34190.00
+Golf;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0;39590.00
+Golf;Life;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.4;0.0;35240.00
+Golf;R;2.0 TSI | 4MOTION | 245 kW | 7-Gang-DSG;Verbrenner;Benzin;8.2;0.0;55540.00
+Golf;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0;36415.00
+Golf;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.3;0.0;38965.00
+Golf;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0;42115.00
+Golf;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;44015.00
+Golf;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;36575.00
+Golf;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;39125.00
+Golf;Style;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.5;0.0;42275.00
+Golf;Style;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;44175.00
+Golf Variant;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0;36815.00
+Golf Variant;Energy;1.5 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;34565.00
+Golf Variant;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;39365.00
+Golf Variant;Energy;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.1;0.0;37115.00
+Golf Variant;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0;42515.00
+Golf Variant;Energy;2.0 TDI | 85 kW | 6-Gang;Verbrenner;Diesel;4.4;0.0;38165.00
+Golf Variant;R;2.0 TSI | 4MOTION | 245 kW | 7-Gang-DSG;Verbrenner;Benzin;8.2;0.0;56810.00
+Golf Variant;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0;37515.00
+Golf Variant;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;40065.00
+Golf Variant;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.8;0.0;43215.00
+Golf Variant;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;45115.00
+Golf Variant;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0;37675.00
+Golf Variant;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.2;0.0;40225.00
+Golf Variant;Style;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;4.6;0.0;43375.00
+Golf Variant;Style;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;6.9;0.0;45275.00
+Grand California;Grand California 600;2.0 TDI VI-e | 120 kW | 8-Gang Automatik;Verbrenner;Diesel;0.0;0.0;83109.60
+Grand California;Grand California 600;2.0 TDI VI-e | 4MOTION | 120 kW | 8-Gang Automatik;Verbrenner;Diesel;0.0;0.0;89255.95
+Grand California;Grand California 680;2.0 TDI VI-e | 120 kW | 8-Gang Automatik;Verbrenner;Diesel;0.0;0.0;86066.75
+Grand California;Grand California 680;2.0 TDI VI-e | 4MOTION | 120 kW | 8-Gang Automatik;Verbrenner;Diesel;0.0;0.0;92225.00
+ID. Buzz;Energy Kurzer Radstand;KR | 79 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;19.5;64051.75
+ID. Buzz;Energy Langer Radstand;LR | 86 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;20.0;65878.40
+ID. Buzz;GTX 4MOTION Kurzer Radstand;KR | 79 kWh | 250 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;20.7;73238.55
+ID. Buzz;GTX 4MOTION Langer Radstand;LR | 86 kWh | 250 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;20.3;75065.20
+ID. Buzz;Pro Kurzer Radstand;KR | 79 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;19.3;61076.75
+ID. Buzz;Pro Langer Radstand;LR | 86 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;19.7;62903.40
+ID. Buzz;Pure;KR | 59 kWh | 125 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;20.4;54311.60
+ID.3;Pro S;79 kWh | 170 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;15.9;44025.00
+ID.4;Pro;Pro 4MOTION 77 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;16.8;51320.00
+ID.4;Pro;Pro 77 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;16.9;48635.00
+ID.5;Pro;Pro 77 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;16.0;51270.00
+ID.7;Pro S;86 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;14.0;59095.00
+ID.7 Tourer;Pro S;86 kWh | 210 kW | 1-Gang-Automatik;Elektro/Hybrid;Elektro;0.0;14.3;59895.00
+Multivan;Energy;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.9;78647.10
+Multivan;Energy;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.6;0.0;64158.85
+Multivan;Energy;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;64373.05
+Multivan;Energy;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.9;15.9;80717.70
+Multivan;Energy;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.6;0.0;66223.50
+Multivan;Energy;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;9.0;0.0;66437.70
+Multivan;Life;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.8;75029.50
+Multivan;Life;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;59678.50
+Multivan;Life;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;60487.70
+Multivan;Life;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.9;77100.10
+Multivan;Life;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;61743.15
+Multivan;Life;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;62552.35
+Multivan;Multivan;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.9;71953.35
+Multivan;Multivan;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;56108.50
+Multivan;Multivan;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;57417.50
+Multivan;Multivan;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.9;74023.95
+Multivan;Multivan;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;58173.15
+Multivan;Multivan;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;59482.15
+Multivan;Style;KÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.9;83401.15
+Multivan;Style;KÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;68889.10
+Multivan;Style;KÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.8;0.0;69085.45
+Multivan;Style;LÜ | 1.5 eHybrid | 4MOTION | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;2.8;15.8;85471.75
+Multivan;Style;LÜ | 2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;6.5;0.0;70953.75
+Multivan;Style;LÜ | 2.0 TSI | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;8.9;0.0;71150.10
+Passat;Business;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.3;13.1;58290.00
+Passat;Business;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.3;13.2;61915.00
+Passat;Business;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.4;0.0;47695.00
+Passat;Business;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.0;0.0;51335.00
+Passat;Business;2.0 TDI | 90 kW | 7-Gang-DSG;Verbrenner;Diesel;4.9;0.0;49515.00
+Passat;Elegance;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.3;13.1;62985.00
+Passat;Elegance;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.3;13.1;66605.00
+Passat;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.0;0.0;56325.00
+Passat;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;5.7;0.0;61405.00
+Passat;R-Line;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.5;13.3;68245.00
+Passat;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.2;0.0;57375.00
+Passat;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;5.8;0.0;62460.00
+Passat;R-Line;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.0;0.0;64540.00
+Polo;Energy;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.1;0.0;26500.00
+Polo;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.4;0.0;29930.00
+Polo;R-Line;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.3;0.0;28480.00
+Polo;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0;31910.00
+T-Cross;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.5;0.0;30250.00
+T-Cross;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.8;0.0;32240.00
+T-Cross;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;34615.00
+T-Cross;Life;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.5;0.0;27065.00
+T-Cross;Life;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0;28835.00
+T-Cross;Life;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;30825.00
+T-Cross;Life;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;33200.00
+T-Cross;R-Line;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0;32930.00
+T-Cross;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;34905.00
+T-Cross;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0;37285.00
+T-Cross;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.7;0.0;31550.00
+T-Cross;Style;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;33550.00
+T-Cross;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0;35935.00
+T-Roc;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0;36755.00
+T-Roc;Life;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0;34005.00
+T-Roc;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;42460.00
+T-Roc;Style;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;41260.00
+T-Roc;Style;1.5 eTSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.6;0.0;38510.00
+T-Roc Cabriolet;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.0;0.0;38700.00
+T-Roc Cabriolet;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.3;0.0;41590.00
+T-Roc Cabriolet;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0;43840.00
+T-Roc Cabriolet;R-Line;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.2;0.0;42730.00
+T-Roc Cabriolet;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0;44980.00
+T-Roc Cabriolet;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;6.0;0.0;37560.00
+T-Roc Cabriolet;Style;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.3;0.0;40450.00
+T-Roc Cabriolet;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0;42700.00
+Taigo;Energy;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;30190.00
+Taigo;Energy;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.5;0.0;32175.00
+Taigo;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;34565.00
+Taigo;Life;1.0 TSI | 70 kW | 5-Gang;Verbrenner;Benzin;5.4;0.0;26770.00
+Taigo;Life;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.4;0.0;28525.00
+Taigo;Life;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.6;0.0;30510.00
+Taigo;R-Line;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0;32720.00
+Taigo;R-Line;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;34715.00
+Taigo;R-Line;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;37105.00
+Taigo;Style;1.0 TSI | 85 kW | 6-Gang;Verbrenner;Benzin;5.6;0.0;31720.00
+Taigo;Style;1.0 TSI | 85 kW | 7-Gang-DSG;Verbrenner;Benzin;5.7;0.0;33715.00
+Taigo;Style;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;36115.00
+Tayron;Elegance;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0;51585.00
+Tayron;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;54120.00
+Tayron;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.4;0.0;60050.00
+Tayron;Elegance;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.7;0.0;56980.00
+Tayron;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0;46925.00
+Tayron;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.4;0.0;49460.00
+Tayron;Life;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.3;0.0;55390.00
+Tayron;Life;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.5;0.0;52320.00
+Tayron;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.2;0.0;53430.00
+Tayron;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.6;0.0;55965.00
+Tayron;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.4;0.0;61895.00
+Tayron;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.7;0.0;58825.00
+Tayron;R-Line 195;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.5;0.0;65340.00
+Tiguan;Elegance;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.6;13.9;57360.00
+Tiguan;Elegance;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0;49310.00
+Tiguan;Elegance;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;51845.00
+Tiguan;Elegance;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.4;0.0;57775.00
+Tiguan;Elegance;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0;54705.00
+Tiguan;Energy;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.4;13.6;54680.00
+Tiguan;Energy;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;46775.00
+Tiguan;Energy;1.5 eTSI | 96 kW | 7-Gang-DSG;Verbrenner;Benzin;5.9;0.0;44695.00
+Tiguan;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.3;0.0;49310.00
+Tiguan;Energy;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.1;0.0;55240.00
+Tiguan;Energy;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0;52170.00
+Tiguan;Life;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.0;0.0;44165.00
+Tiguan;Life;1.5 eTSI | 96 kW | 7-Gang-DSG;Verbrenner;Benzin;5.8;0.0;42085.00
+Tiguan;Life;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.4;0.0;46700.00
+Tiguan;Life;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.1;0.0;52630.00
+Tiguan;Life;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.4;0.0;49560.00
+Tiguan;R-Line;1.5 eHybrid | 110 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.6;13.7;59820.00
+Tiguan;R-Line;1.5 eHybrid | 130 kW | 6-Gang-DSG;Elektro/Hybrid;Hybrid;1.6;13.6;62110.00
+Tiguan;R-Line;1.5 eTSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.1;0.0;51770.00
+Tiguan;R-Line;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;54305.00
+Tiguan;R-Line;2.0 TDI | 4MOTION | 142 kW | 7-Gang-DSG;Verbrenner;Diesel;6.3;0.0;60235.00
+Tiguan;R-Line;2.0 TSI | 4MOTION | 150 kW | 7-Gang-DSG;Verbrenner;Benzin;7.6;0.0;57165.00
+Tiguan;R-Line 195;2.0 TSI | 4MOTION | 195 kW | 7-Gang-DSG;Verbrenner;Benzin;8.4;0.0;63740.00
+Touareg;Elegance Final Edition;3.0 V6 TDI | 4MOTION | 170 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.6;0.0;81505.00
+Touareg;Elegance Final Edition;3.0 V6 TDI | 4MOTION | 210 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.4;0.0;85810.00
+Touareg;R-Line Final Edition;3.0 V6 TDI | 4MOTION | 170 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.6;0.0;86255.00
+Touareg;R-Line Final Edition;3.0 V6 TDI | 4MOTION | 210 kW | 8-Gang-Automatik;Verbrenner;Diesel;8.5;0.0;90560.00
+Touran;Comfortline;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.5;0.0;41995.00
+Touran;Comfortline;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.7;0.0;44410.00
+Touran;Comfortline;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;48350.00
+Touran;Comfortline;2.0 TDI | 90 kW | 6-Gang;Verbrenner;Diesel;5.4;0.0;43095.00
+Touran;Energy;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.6;0.0;43760.00
+Touran;Energy;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.6;0.0;46175.00
+Touran;Energy;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.5;0.0;50115.00
+Touran;Energy;2.0 TDI | 90 kW | 6-Gang;Verbrenner;Diesel;5.3;0.0;44860.00
+Touran;Highline;1.5 TSI | 110 kW | 6-Gang;Verbrenner;Benzin;6.4;0.0;46470.00
+Touran;Highline;1.5 TSI | 110 kW | 7-Gang-DSG;Verbrenner;Benzin;6.4;0.0;48885.00
+Touran;Highline;2.0 TDI | 110 kW | 7-Gang-DSG;Verbrenner;Diesel;5.4;0.0;52825.00

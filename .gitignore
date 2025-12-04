@@ -218,3 +218,6 @@ data/processed/engines.csv
 # Data Loader/Transform
 src/data_loader.py
 src/data_transform.py
+
+# Streamlit Secrets
+.streamlit/secrets.toml

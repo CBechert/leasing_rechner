@@ -1,8 +1,24 @@
+import requests
+import json
 import pandas as pd
 import streamlit as st
-from src.config import PROCESSED_DIR
-from src.data_loader import load_engines
-from src.data_transform import export_final_engine_csv
+from math import radians, sin, cos, sqrt, atan2
+import statistics
+
+from src.config import PROCESSED_DIR, STATIONS_PATH
+
+
+API_BASE = "https://creativecommons.tankerkoenig.de/json"
+API_KEY = st.secrets["tankerkoenig"]["api_key"]
+
+# --- Page setup (muss vor dem ersten Streamlit-Output kommen) ---
+st.set_page_config(
+    page_title="Leasing Rechner",
+    page_icon="🚗",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 
 def get_leasing_bedingung(modell: str, kategorie: str, motor: str) -> str:
     """
@@ -37,22 +53,11 @@ def get_leasing_bedingung(modell: str, kategorie: str, motor: str) -> str:
 
     # Fallback
     return "Verbrenner|Rest"
-
-
-# --- Page setup (muss vor dem ersten Streamlit-Output kommen) ---
-st.set_page_config(
-    page_title="Leasing Rechner",
-    page_icon="🚗",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+    
 
 # --- Daten laden + ETL, mit Cache ---
 @st.cache_data
 def load_data():
-    # ETL-Pipeline
-    load_engines()
-    export_final_engine_csv()
 
     autos = pd.read_csv(f"{PROCESSED_DIR}/autos.csv", sep=";")
     leasing = pd.read_csv(f"{PROCESSED_DIR}/leasing.csv", sep=";")
@@ -67,7 +72,125 @@ def load_data():
 
     return autos, leasing
 
+
+@st.cache_data
+def load_stations() -> pd.DataFrame:
+    with STATIONS_PATH.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    df = pd.DataFrame(data)
+
+    # Optionale Aufräumarbeiten
+    if "post_code" in df.columns:
+        df["post_code"] = df["post_code"].astype(str)
+
+    return df
+
+def haversine_km(lat1, lon1, lat2, lon2):
+    R = 6371.0
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c
+
+
+def get_nearby_stations(df: pd.DataFrame, lat: float, lng: float, radius_km: float = 10.0) -> pd.DataFrame:
+    df = df.copy()
+    df["dist"] = df.apply(
+        lambda row: haversine_km(lat, lng, row["lat"], row["lng"]),
+        axis=1,
+    )
+    return df[df["dist"] <= radius_km].sort_values("dist")
+
+
+@st.cache_data(ttl=300)
+def fetch_prices_for_station_ids(station_ids: list[str]) -> dict:
+    """
+    Holt Preise für mehrere Tankstellen-IDs über /prices.php
+    Cache: 5 Minuten, um Tankerkönig nicht zu spammen.
+    """
+    if not station_ids:
+        return {}
+
+    params = {
+        "ids": ",".join(station_ids),
+        "apikey": API_KEY,
+    }
+    r = requests.get(f"{API_BASE}/prices.php", params=params, timeout=10)
+    data = r.json()
+
+    if not data.get("ok"):
+        raise RuntimeError(data.get("message", "Fehler bei Tankerkönig /prices.php"))
+
+    return data["prices"]  # Dict: id -> {e5,e10,diesel,status,...}
+
+
+@st.cache_data(ttl=300)
+def get_average_fuel_prices(
+    lat: float,
+    lng: float,
+    radius_km: float = 15.0,
+    max_stations: int = 20,
+) -> dict:
+    """
+    Ermittelt Durchschnittspreise für E10/E5/Diesel um einen Punkt herum.
+    Strom bleibt manuell.
+    """
+    stations_df = load_stations()
+    nearby = get_nearby_stations(stations_df, lat, lng, radius_km).head(max_stations)
+
+    if nearby.empty:
+        raise RuntimeError("Keine Tankstellen im definierten Umkreis gefunden.")
+
+    prices = fetch_prices_for_station_ids(nearby["id"].tolist())
+
+    diesel_list = []
+    e5_list = []
+    e10_list = []
+
+    for sid, p in prices.items():
+        if p.get("status") != "open":
+            continue
+        if p.get("diesel") is not None:
+            diesel_list.append(p["diesel"])
+        if p.get("e5") is not None:
+            e5_list.append(p["e5"])
+        if p.get("e10") is not None:
+            e10_list.append(p["e10"])
+
+    def avg(lst):
+        return round(statistics.mean(lst), 3) if lst else None
+    
+
+    diesel_avg = avg(diesel_list)
+    e5_avg = avg(e5_list)
+    e10_avg = avg(e10_list)
+
+    # Fallback-Werte, falls API mal spinnt / Liste leer ist
+    fallback = {
+        "Super E10": 1.78,
+        "Super E5": 1.85,
+        "Super+": 2.05,
+        "Diesel": 1.65,
+        "Strom": 0.30,
+    }
+
+    result = {
+        "Super E10": e10_avg or fallback["Super E10"],
+        "Super E5": e5_avg or fallback["Super E5"],
+        # Super+ gibt es bei Tankerkönig nicht – grobe Annahme: E5 + 0,20 €
+        "Super+": (e5_avg + 0.20) if e5_avg else fallback["Super+"],
+        "Diesel": diesel_avg or fallback["Diesel"],
+        # Strom bleibt manuell
+        "Strom": fallback["Strom"],
+    }
+
+    return result
+
+
+# Date laden
 autos, leasing = load_data()
+
 
 # --- Ranking-State in Session ---
 if "ranking" not in st.session_state:
@@ -77,16 +200,29 @@ if "ranking" not in st.session_state:
 st.markdown("<h1 style='text-align: center;'>🚗 Leasing Rechner App</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
-# --- Aktuelle Spritpreise (Dummy-Werte) ---
-spritpreise = {
-    "Super E10": 1.78,
-    "Super E5": 1.85,
-    "Super+": 2.05,
-    "Diesel": 1.65,
-    "Strom": 0.30,
-}
 
-st.markdown("<h2 style='text-align: center;'>⛽ Aktuelle Spritpreise</h2>", unsafe_allow_html=True)
+# --- Aktuelle Spritpreise (Tankerkönig) ---
+
+st.markdown("<h2 style='text-align: center;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>", unsafe_allow_html=True)
+
+# Wolfsburg grob als Mittelpunkt
+WOB_LAT = 52.4226
+WOB_LNG = 10.7865
+RADIUS_KM = 15.0  # kannst du anpassen
+
+try:
+    spritpreise = get_average_fuel_prices(WOB_LAT, WOB_LNG, RADIUS_KM, max_stations=10)
+    st.caption(f"Basis: Tankerkönig, Ø aus max. 10 offenen Tankstellen im Umkreis von {RADIUS_KM} km.")
+except Exception as e:
+    # Fallback: alte Dummy-Werte nutzen, wenn API / Key / Netzwerk Probleme machen
+    st.error(f"Tankerkönig-API nicht erreichbar, nutze Backup-Werte. ({e})")
+    spritpreise = {
+        "Super E10": 1.78,
+        "Super E5": 1.85,
+        "Super+": 2.05,
+        "Diesel": 1.65,
+        "Strom": 0.30,
+    }
 
 cols = st.columns(len(spritpreise))
 for i, (sorte, preis) in enumerate(spritpreise.items()):

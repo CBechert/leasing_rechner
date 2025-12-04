@@ -8,9 +8,6 @@ import statistics
 from src.config import PROCESSED_DIR, STATIONS_PATH
 
 
-API_BASE = "https://creativecommons.tankerkoenig.de/json"
-API_KEY = st.secrets["tankerkoenig"]["api_key"]
-
 # --- Page setup (muss vor dem ersten Streamlit-Output kommen) ---
 st.set_page_config(
     page_title="Leasing Rechner",
@@ -18,6 +15,10 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+
+API_BASE = "https://creativecommons.tankerkoenig.de/json"
+API_KEY = st.secrets["tankerkoenig"]["api_key"]
 
 
 def get_leasing_bedingung(modell: str, kategorie: str, motor: str) -> str:
@@ -200,7 +201,6 @@ if "ranking" not in st.session_state:
 st.markdown("<h1 style='text-align: center;'>🚗 Leasing Rechner App</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
-
 # --- Aktuelle Spritpreise (Tankerkönig) ---
 
 st.markdown("<h2 style='text-align: center;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>", unsafe_allow_html=True)
@@ -262,11 +262,12 @@ if st.session_state["ranking"]:
 
     
     st.dataframe(ranking_df,
-                 column_config= {col: st.column_config.NumberColumn(format="€%d") for col in geld_spalten}
+                 column_config= {
+                     "Bild": st.column_config.ImageColumn(width="large"),
+                     **{col: st.column_config.NumberColumn(format="€%d") for col in geld_spalten}
+                     }
                  )
-                 
-                 
-                 
+
                  
 else:
     st.info("Bitte mindestens ein Fahrzeug ins Ranking übernehmen.")
@@ -336,6 +337,7 @@ for row in range(rows):
             verbrauch_input = 0.0
             verbrauch_input_strom = 0.0
             default_uvp = 30000
+            bild = ""
 
             if selected_engine:
                 motor_info = autos[
@@ -344,6 +346,8 @@ for row in range(rows):
                     & (autos["Motor"] == selected_engine)
                 ]
                 if not motor_info.empty:
+                    if "Bild" in motor_info.columns:
+                        bild = motor_info["Bild"].values[0]
                     if "Preis" in motor_info.columns:
                         default_uvp = float(motor_info["Preis"].values[0])
                     # Eingabe der UVP
@@ -592,6 +596,7 @@ for row in range(rows):
                         # neuen Eintrag hinzufügen
                         st.session_state["ranking"].append(
                             {
+                                "Bild": bild,
                                 "Slot": car_index + 1,
                                 "Modell": selected_model,
                                 "Ausstattungslinie": selected_variation,
@@ -611,3 +616,4 @@ for row in range(rows):
                         )
 
                         st.success("Fahrzeug ins Ranking übernommen.")
+                        st.rerun()

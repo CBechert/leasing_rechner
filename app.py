@@ -2,11 +2,8 @@ import requests
 import json
 import pandas as pd
 import streamlit as st
-from math import radians, sin, cos, sqrt, atan2
-import statistics
 
 from src.config import PROCESSED_DIR, STATIONS_PATH
-
 
 # --- Page setup (muss vor dem ersten Streamlit-Output kommen) ---
 st.set_page_config(
@@ -15,7 +12,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
 
 API_BASE = "https://creativecommons.tankerkoenig.de/json"
 API_KEY = st.secrets["tankerkoenig"]["api_key"]
@@ -54,12 +50,11 @@ def get_leasing_bedingung(modell: str, kategorie: str, motor: str) -> str:
 
     # Fallback
     return "Verbrenner|Rest"
-    
+
 
 # --- Daten laden + ETL, mit Cache ---
 @st.cache_data
 def load_data():
-
     autos = pd.read_csv(f"{PROCESSED_DIR}/autos.csv", sep=";")
     leasing = pd.read_csv(f"{PROCESSED_DIR}/leasing.csv", sep=";")
 
@@ -74,124 +69,185 @@ def load_data():
     return autos, leasing
 
 
-@st.cache_data
-def load_stations() -> pd.DataFrame:
+def load_stations():
     with STATIONS_PATH.open("r", encoding="utf-8") as f:
-        data = json.load(f)
-    df = pd.DataFrame(data)
-
-    # Optionale Aufräumarbeiten
-    if "post_code" in df.columns:
-        df["post_code"] = df["post_code"].astype(str)
-
-    return df
-
-def haversine_km(lat1, lon1, lat2, lon2):
-    R = 6371.0
-    dlat = radians(lat2 - lat1)
-    dlon = radians(lon2 - lon1)
-    a = sin(dlat / 2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    return R * c
+        stations = json.load(f)
+    return stations
 
 
-def get_nearby_stations(df: pd.DataFrame, lat: float, lng: float, radius_km: float = 10.0) -> pd.DataFrame:
-    df = df.copy()
-    df["dist"] = df.apply(
-        lambda row: haversine_km(lat, lng, row["lat"], row["lng"]),
-        axis=1,
+def auto_selectbox_single(label: str, options, key: str, placeholder: str | None = None):
+    """
+    Sonderfall bei Kraftstoff:
+    - Immer automatisch ausgewählt
+    - Bei Benziner → Super E10 (über Aufrufer geregelt)
+
+    Für Line / Motor / Leasingoption:
+    - 0 Optionen  → leere Selectbox (None, mit Placeholder)
+    - 1 Option    → automatisch ausgewählt (Session-State wird gesetzt)
+    - ≥2 Optionen → leer mit Placeholder
+    """
+    options = list(options) if options is not None else []
+
+    # Sonderfall
+    if label == "Kraftstoff":
+        current = st.session_state.get(key, None)
+        if current not in options and options:
+            st.session_state[key] = options[0]
+        return st.selectbox(label, options, key=key)
+
+    # 0 Optionen → leer
+    if len(options) == 0:
+        return st.selectbox(
+            label,
+            [],
+            index=None,
+            placeholder=placeholder,
+            key=key,
+        )
+
+    # 1 Option → Session-State auf diese Option setzen, falls noch nichts/ungültig
+    if len(options) == 1:
+        current = st.session_state.get(key, None)
+        if current not in options:
+            st.session_state[key] = options[0]
+        return st.selectbox(label, options, key=key)
+
+    # ≥2 Optionen → leer lassen, Nutzer muss wählen
+    return st.selectbox(
+        label,
+        options,
+        index=None,
+        placeholder=placeholder,
+        key=key,
     )
-    return df[df["dist"] <= radius_km].sort_values("dist")
 
 
 @st.cache_data(ttl=300)
-def fetch_prices_for_station_ids(station_ids: list[str]) -> dict:
+def get_fuel_prices() -> dict:
     """
-    Holt Preise für mehrere Tankstellen-IDs über /prices.php
-    Cache: 5 Minuten, um Tankerkönig nicht zu spammen.
+    Holt Preise für mehrere Tankstellen-IDs über /prices.php.
+    Gibt {} zurück, wenn irgendwas schiefgeht (DNS, Netzwerk, HTTP, API-Fehler).
     """
-    if not station_ids:
+    try:
+        stations = load_stations()
+    except Exception:
         return {}
 
-    params = {
-        "ids": ",".join(station_ids),
-        "apikey": API_KEY,
-    }
-    r = requests.get(f"{API_BASE}/prices.php", params=params, timeout=10)
-    data = r.json()
+    id_liste = [station.get("id") for station in stations if station.get("id")]
+    if not id_liste:
+        return {}
+
+    try:
+        r = requests.get(
+            f"{API_BASE}/prices.php?ids={','.join(str(x) for x in id_liste)}&apikey={API_KEY}",timeout=10,)
+        data = r.json()
+    except Exception:
+        # DNS / Netzwerk / HTTP-Fehler → keine Preise
+        return {}
 
     if not data.get("ok"):
-        raise RuntimeError(data.get("message", "Fehler bei Tankerkönig /prices.php"))
+        return {}
 
-    return data["prices"]  # Dict: id -> {e5,e10,diesel,status,...}
+    prices = data["prices"]
+    # Nur offene Tankstellen behalten
+    open_stations = {
+        sid: info for sid, info in prices.items()
+        if info.get("status") == "open"
+    }
+    return open_stations
 
 
 @st.cache_data(ttl=300)
-def get_average_fuel_prices(
-    lat: float,
-    lng: float,
-    radius_km: float = 15.0,
-    max_stations: int = 20,
-) -> dict:
-    """
-    Ermittelt Durchschnittspreise für E10/E5/Diesel um einen Punkt herum.
-    Strom bleibt manuell.
-    """
-    stations_df = load_stations()
-    nearby = get_nearby_stations(stations_df, lat, lng, radius_km).head(max_stations)
+def get_fuel_stats():
+    prices = get_fuel_prices()
+    if not prices:
+        raise RuntimeError("Keine Preise von Tankerkönig erhalten.")
+    kraftstoffe = ["e5", "e10", "diesel"]
+    stats = {"min": {}, "avg": {}, "max": {}}
 
-    if nearby.empty:
-        raise RuntimeError("Keine Tankstellen im definierten Umkreis gefunden.")
+    for fuel in kraftstoffe:
+        values = [int(info[fuel] * 100) / 100 for info in prices.values() if fuel in info and info[fuel] is not None]
+        if values:
+            stats["min"][fuel] = min(values)
+            stats["avg"][fuel] = round(sum(values) / len(values), 3)
+            stats["max"][fuel] = max(values)
+        else:
+            stats["min"][fuel] = stats["avg"][fuel] = stats["max"][fuel] = None
 
-    prices = fetch_prices_for_station_ids(nearby["id"].tolist())
-
-    diesel_list = []
-    e5_list = []
-    e10_list = []
-
-    for sid, p in prices.items():
-        if p.get("status") != "open":
-            continue
-        if p.get("diesel") is not None:
-            diesel_list.append(p["diesel"])
-        if p.get("e5") is not None:
-            e5_list.append(p["e5"])
-        if p.get("e10") is not None:
-            e10_list.append(p["e10"])
-
-    def avg(lst):
-        return round(statistics.mean(lst), 3) if lst else None
-    
-
-    diesel_avg = avg(diesel_list)
-    e5_avg = avg(e5_list)
-    e10_avg = avg(e10_list)
-
-    # Fallback-Werte, falls API mal spinnt / Liste leer ist
-    fallback = {
-        "Super E10": 1.78,
-        "Super E5": 1.85,
-        "Super+": 2.05,
-        "Diesel": 1.65,
-        "Strom": 0.30,
-    }
-
-    result = {
-        "Super E10": e10_avg or fallback["Super E10"],
-        "Super E5": e5_avg or fallback["Super E5"],
-        # Super+ gibt es bei Tankerkönig nicht – grobe Annahme: E5 + 0,20 €
-        "Super+": (e5_avg + 0.20) if e5_avg else fallback["Super+"],
-        "Diesel": diesel_avg or fallback["Diesel"],
-        # Strom bleibt manuell
-        "Strom": fallback["Strom"],
-    }
-
-    return result
+    return stats
 
 
-# Date laden
+def berechne_kosten(row: pd.Series) -> pd.Series:
+        kraftstoff = str(row["Kraftstoff"]).lower()
+        uvp = float(row["UVP"])
+        laufzeit = int(row["Laufzeit_Monate"])
+        km_gesamt = float(row["Freikilometer"])
+        leasingrate_faktor = float(row["Leasingrate_Faktor"])
+        verbrauch_l = float(row.get("Verbrauch_L_100", 0.0))
+        verbrauch_kwh = float(row.get("Verbrauch_kWh_100", 0.0))
+        sprit = row["Sprit"]
+
+        spritkosten_pro_monat = 0.0
+
+        if laufzeit <= 0:
+            # Alles 0, wenn Laufzeit kaputt
+            leasingkosten_pro_monat = uvp * leasingrate_faktor
+            return pd.Series(
+                {
+                    "Leasingkosten / Monat": round(leasingkosten_pro_monat, 2),
+                    "Leasingkosten (Gesamt)": 0.0,
+                    "Spritkosten / Monat": 0.0,
+                    "Spritkosten (Gesamt)": 0.0,
+                    "Gesamtkosten / Monat": round(leasingkosten_pro_monat, 2),
+                    "Kosten (Gesamt)": 0.0,
+                }
+            )
+
+        if kraftstoff in ["benzin", "diesel"]:
+            spritpreis = spritpreise.get(sprit, 0.0)
+            spritkosten_pro_monat = (
+                km_gesamt / 100.0 * verbrauch_l * spritpreis / laufzeit
+            )
+
+        elif kraftstoff == "elektro":
+            strompreis = spritpreise.get("Strom", 0.0)
+            spritkosten_pro_monat = (
+                km_gesamt / 100.0 * verbrauch_kwh * strompreis / laufzeit
+            )
+
+        elif kraftstoff in ["elektro/hybrid", "hybrid"]:
+            spritpreis = spritpreise.get(sprit, 0.0)
+            strompreis = spritpreise.get("Strom", 0.0)
+            kosten_benzin = (
+                km_gesamt / 100.0 * verbrauch_l * spritpreis / laufzeit
+            )
+            kosten_strom = (
+                km_gesamt / 100.0 * verbrauch_kwh * strompreis / laufzeit
+            )
+            spritkosten_pro_monat = kosten_benzin + kosten_strom
+
+        # Leasingkosten / Monat
+        leasingkosten_pro_monat = uvp * leasingrate_faktor
+        leasingkosten_gesamt = leasingkosten_pro_monat * laufzeit
+
+        spritkosten_gesamt = spritkosten_pro_monat * laufzeit
+        gesamtkosten_pro_monat = leasingkosten_pro_monat + spritkosten_pro_monat
+        kosten_gesamt = gesamtkosten_pro_monat * laufzeit
+
+        return pd.Series(
+            {
+                "Leasingkosten / Monat": round(leasingkosten_pro_monat, 2),
+                "Leasingkosten (Gesamt)": round(leasingkosten_gesamt, 2),
+                "Spritkosten / Monat": round(spritkosten_pro_monat, 2),
+                "Spritkosten (Gesamt)": round(spritkosten_gesamt, 2),
+                "Gesamtkosten / Monat": round(gesamtkosten_pro_monat, 2),
+                "Kosten (Gesamt)": round(kosten_gesamt, 2),
+            }
+        )
+        
+
+# Daten laden
 autos, leasing = load_data()
-
 
 # --- Ranking-State in Session ---
 if "ranking" not in st.session_state:
@@ -201,42 +257,93 @@ if "ranking" not in st.session_state:
 st.markdown("<h1 style='text-align: center;'>🚗 Leasing Rechner App</h1>", unsafe_allow_html=True)
 st.markdown("---")
 
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --- Aktuelle Spritpreise (Tankerkönig) ---
 
-st.markdown("<h2 style='text-align: center;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>", unsafe_allow_html=True)
+# Wolfsburg grob als Mittelpunkt (aktuell nicht genutzt, aber lass es drin)
+WOB_LAT = 52.423
+WOB_LNG = 10.787
+RADIUS_KM = 15.0
 
-# Wolfsburg grob als Mittelpunkt
-WOB_LAT = 52.4226
-WOB_LNG = 10.7865
-RADIUS_KM = 15.0  # kannst du anpassen
+tanker_preise = {}
+fallback_spritpreise = {
+    "Super E10": 1.78,
+    "Super E5": 1.85,
+    "Super+": 2.05,
+    "Diesel": 1.65,
+}
+
+col1, col2 = st.columns(2)
+with col1:
+    price_category = st.radio(
+        "Welche Spritpreise sollen es sein ? 👇",
+        ["Günstigste", "Durchschnittliche", "Teuerste"],
+        key="price_category",
+        horizontal=True,
+    )
+with col2:
+    strom = st.slider("Wie hoch soll der Strompreis sein? ⚡️", 0.00, 1.00, 0.30)
+
+if price_category == "Günstigste":
+    st.markdown("<h2 style='text-align: center;'>⛽ Günstigste Spritpreise im Raum Wolfsburg 📉</h2>", unsafe_allow_html=True)
+    stats_key = "min"
+elif price_category == "Durchschnittliche":
+    st.markdown("<h2 style='text-align: center;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>", unsafe_allow_html=True)
+    stats_key = "avg"
+else:
+    st.markdown("<h2 style='text-align: center;'>⛽ Teuerste Spritpreise im Raum Wolfsburg 📈</h2>", unsafe_allow_html=True)
+    stats_key = "max"
 
 try:
-    spritpreise = get_average_fuel_prices(WOB_LAT, WOB_LNG, RADIUS_KM, max_stations=10)
-    st.caption(f"Basis: Tankerkönig, Ø aus max. 10 offenen Tankstellen im Umkreis von {RADIUS_KM} km.")
+    fuel_stats = get_fuel_stats()
+    tanker_preise = fuel_stats.get(stats_key, {})
+    # tanker_preise: keys e5, e10, diesel → in UI-Namen mappen + Fallback
+    spritpreise = {
+        "Super E10": tanker_preise.get("e10", fallback_spritpreise["Super E10"]),
+        "Super E5": tanker_preise.get("e5", fallback_spritpreise["Super E5"]),
+        # Super+ = E5 + 0.10 (oder was du willst)
+        "Super+": tanker_preise.get("e5", fallback_spritpreise["Super E5"]) + 0.10,
+        "Diesel": tanker_preise.get("diesel", fallback_spritpreise["Diesel"]),
+        "Strom": strom,
+    }
 except Exception as e:
-    # Fallback: alte Dummy-Werte nutzen, wenn API / Key / Netzwerk Probleme machen
     st.error(f"Tankerkönig-API nicht erreichbar, nutze Backup-Werte. ({e})")
     spritpreise = {
-        "Super E10": 1.78,
-        "Super E5": 1.85,
-        "Super+": 2.05,
-        "Diesel": 1.65,
-        "Strom": 0.30,
+        **fallback_spritpreise,
+        "Strom": strom,
     }
 
 cols = st.columns(len(spritpreise))
 for i, (sorte, preis) in enumerate(spritpreise.items()):
-    cols[i].markdown(
-        f"""
-        <div style='text-align: center; background-color: black; color: white; font-family: monospace; font-size: 16px; padding: 10px; border-radius: 8px;'>
-            {sorte}<br><span style='font-size:36px; color: lime'>{preis:.2f} €</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    if sorte != "Strom":
+        cols[i].markdown(
+            f"""
+            <div style='text-align: center; background-color: black; color: white; font-family: monospace; font-size: 16px; padding: 10px; border-radius: 8px;'>
+                {sorte}<br><span style='font-size:36px; color: lime'>{preis:.2f} €</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        cols[i].markdown(
+            f"""
+            <div style='text-align: center; background-color: black; color: white; font-family: monospace; font-size: 16px; padding: 10px; border-radius: 8px;'>
+                {sorte}<br><span style='font-size:36px; color: yellow'>{preis:.2f} €</span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+st.caption(
+    "\\* Kraftstoffpreise: E5, E10 und Diesel basieren auf Daten von "
+    "[www.tankerkoenig.de](https://www.tankerkoenig.de) "
+    "und können zeitlich verzögert oder bereits veraltet sein. "
+    "Der Preis für Super+ wird aus Super E5 geschätzt, der Strompreis wird manuell vom Nutzer festgelegt. "
+    "Alle Angaben ohne Gewähr."
+)
 
 st.markdown("---")
-
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # --- Ranking ---
 st.markdown("---")
@@ -245,10 +352,32 @@ st.markdown(
 )
 
 if st.session_state["ranking"]:
-    ranking_df = pd.DataFrame(st.session_state["ranking"])
+    raw_df = pd.DataFrame(st.session_state["ranking"])
+
+    kosten_df = raw_df.apply(berechne_kosten, axis=1)
+    ranking_df = pd.concat([raw_df, kosten_df], axis=1)
 
     # Standard: nach Gesamtkosten / Monat sortieren
     ranking_df = ranking_df.sort_values("Gesamtkosten / Monat", ascending=True)
+    
+    relevante_spalten = [
+        "Bild",
+        "Slot",
+        "Modell",
+        "Ausstattungslinie",
+        "Motor",
+        "UVP",
+        "Leasingoption",
+        "Kraftstoff",
+        "Sprit",
+        "Leasingkosten / Monat",
+        "Leasingkosten (Gesamt)",
+        "Spritkosten / Monat",
+        "Spritkosten (Gesamt)",
+        "Gesamtkosten / Monat",
+        "Kosten (Gesamt)",
+        "Beschreibung",
+    ]
 
     geld_spalten = [
         "UVP",
@@ -260,18 +389,27 @@ if st.session_state["ranking"]:
         "Kosten (Gesamt)",
     ]
 
-    
-    st.dataframe(ranking_df,
-                 column_config= {
-                     "Bild": st.column_config.ImageColumn(width="large"),
-                     **{col: st.column_config.NumberColumn(format="€%d") for col in geld_spalten}
-                     }
-                 )
 
-                 
+    st.dataframe(
+        ranking_df[relevante_spalten],
+        column_config={
+            "Bild": st.column_config.ImageColumn(),
+            **{
+                col: st.column_config.NumberColumn(format="€%d")
+                for col in geld_spalten
+            },
+        },
+    )
+    st.caption(
+    "\\* Fahrzeug- und Leasingdaten stammen aus eigenen Datenquellen "
+    "und können unvollständig oder nicht mehr aktuell sein. "
+    "Es handelt sich um unverbindliche Beispielrechnungen – maßgeblich sind stets die offiziellen Angaben "
+    "des Herstellers bzw. Anbieters. Alle Angaben ohne Gewähr."
+)
+
+
 else:
     st.info("Bitte mindestens ein Fahrzeug ins Ranking übernehmen.")
-
 
 # --- Autoauswahl (2 Reihen mit je 4 Autos = 8 Autos gesamt) ---
 st.markdown("<h2 style='text-align: center;'>🚘 Autoauswahl</h2>", unsafe_allow_html=True)
@@ -289,7 +427,7 @@ for row in range(rows):
                 unsafe_allow_html=True,
             )
 
-            # Auswahl des Modells
+            # --- Modell: bleibt wie bisher (leer, bis Nutzer wählt) ---
             modelle = autos["Modell"].unique()
             selected_model = st.selectbox(
                 "Modell",
@@ -299,45 +437,43 @@ for row in range(rows):
                 key=f"modell_{car_index}",
             )
 
-            # Auswahl der Ausstattungslinie basierend auf Modell
-            variationen = (
-                autos[autos["Modell"] == selected_model]["Ausstattungslinie"].unique()
-                if selected_model
-                else []
-            )
-            selected_variation = st.selectbox(
+            # --- Ausstattungslinie: auto-select wenn genau 1 Option ---
+            if selected_model:
+                variationen = autos[autos["Modell"] == selected_model]["Ausstattungslinie"].unique()
+            else:
+                variationen = []
+
+            selected_variation = auto_selectbox_single(
                 "Ausstattungslinie",
                 variationen,
-                index=None,
-                placeholder="Bitte wählen",
                 key=f"variation_{car_index}",
+                placeholder="Bitte wählen",
             )
 
-            # Auswahl der Motorisierung basierend auf Modell und Ausstattung
-            motoren = (
-                autos[
+            # --- Motor: auto-select wenn genau 1 Option ---
+            if selected_model and selected_variation:
+                motoren = autos[
                     (autos["Modell"] == selected_model)
                     & (autos["Ausstattungslinie"] == selected_variation)
                 ]["Motor"].unique()
-                if selected_variation
-                else []
-            )
-            selected_engine = st.selectbox(
+            else:
+                motoren = []
+
+            selected_engine = auto_selectbox_single(
                 "Motor",
                 motoren,
-                index=None,
-                placeholder="Bitte wählen",
                 key=f"motor_{car_index}",
+                placeholder="Bitte wählen",
             )
-            
 
-            # Anzeige UVP + Kraftstoffart + Verbrauch
-            kraftstoff = None
-            selected_sprit = None
-            verbrauch_input = 0.0
-            verbrauch_input_strom = 0.0
-            default_uvp = 30000
+            # --- Motorinfos vorbereiten ---
+            motor_info = pd.DataFrame()
+            has_motor = False
             bild = ""
+            kraftstoff = None
+            verbrauch_l_default = 0.0
+            verbrauch_kwh_default = 0.0
+            uvp_default = 0
 
             if selected_engine:
                 motor_info = autos[
@@ -346,132 +482,202 @@ for row in range(rows):
                     & (autos["Motor"] == selected_engine)
                 ]
                 if not motor_info.empty:
-                    if "Bild" in motor_info.columns:
-                        bild = motor_info["Bild"].values[0]
-                    if "Preis" in motor_info.columns:
-                        default_uvp = float(motor_info["Preis"].values[0])
-                    # Eingabe der UVP
-                    uvp = st.number_input(
-                        "UVP (in €)",
-                        value=int(default_uvp),
-                        min_value=0,
-                        step=1000,
-                        key=f"uvp_{car_index}",
-                    )
-                    kraftstoff = motor_info["Kraftstoff"].values[0]
-                    verbrauch_l = float(motor_info["l/100km"].values[0])
-                    verbrauch_kwh = float(motor_info["kWh/100km"].values[0])
-                    sprit_arten = ["Super E10", "Super E5", "Super+"]
+                    has_motor = True
+                    row_info = motor_info.iloc[0]
+                    bild = row_info.get("Bild", "")
+                    kraftstoff = row_info["Kraftstoff"]
+                    uvp_default = int(row_info.get("Preis", 0))
+                    verbrauch_l_default = float(row_info["l/100km"])
+                    verbrauch_kwh_default = float(row_info["kWh/100km"])
 
-                    if kraftstoff.lower() == "benzin":
-                        selected_sprit = st.selectbox(
-                            "Kraftstoff",
-                            sprit_arten,
-                            index=0,
-                            key=f"sprit_{car_index}",
-                        )
+            # --- UVP immer anzeigen (0, wenn kein Motor gewählt / keine Daten) ---
+            uvp = st.number_input(
+                "UVP (in €)",
+                value=uvp_default,
+                min_value=0,
+                step=1000,
+                key=f"uvp_{car_index}",
+                disabled=not has_motor,
+            )
+
+            # --- Kraftstoff + Verbrauch: immer Felder anzeigen ---
+            sprit_arten = ["Super E10", "Super E5", "Super+"]
+            selected_sprit = None
+            verbrauch_input = 0.0       # L/100km
+            verbrauch_input_strom = 0.0 # kWh/100km
+
+            if has_motor:
+                if kraftstoff.lower() == "benzin":
+                    # 3 Optionen, immer E10 als Vorauswahl
+                    selected_sprit = auto_selectbox_single(
+                        "Kraftstoff",
+                        sprit_arten,
+                        key=f"sprit_{car_index}",
+                        placeholder="Bitte wählen",
+                    )
+                    st.markdown("**Verbrenner:**")
+                    verbrauch_input = st.number_input(
+                        "Verbrauch (L/100km)",
+                        value=round(verbrauch_l_default, 1),
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_l_{car_index}",
+                    )
+                    verbrauch_input_strom = 0.0
+
+                elif kraftstoff.lower() == "diesel":
+                    # Nur Diesel → automatisch ausgewählt
+                    selected_sprit = auto_selectbox_single(
+                        "Kraftstoff",
+                        ["Diesel"],
+                        key=f"sprit_{car_index}",
+                        placeholder="Bitte wählen",
+                    )
+                    st.markdown("**Verbrenner:**")
+                    verbrauch_input = st.number_input(
+                        "Verbrauch (L/100km)",
+                        value=round(verbrauch_l_default, 1),
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_l_{car_index}",
+                    )
+                    verbrauch_input_strom = 0.0
+
+                elif kraftstoff.lower() == "elektro":
+                    # Nur Strom → automatisch ausgewählt
+                    selected_sprit = auto_selectbox_single(
+                        "Kraftstoff",
+                        ["Strom"],
+                        key=f"sprit_{car_index}",
+                        placeholder="Bitte wählen",
+                    )
+                    verbrauch_input = 0.0
+                    st.markdown("**E-Motor:**")
+                    verbrauch_input_strom = st.number_input(
+                        "Verbrauch (kWh/100km)",
+                        value=round(verbrauch_kwh_default, 1),
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_kwh_{car_index}",
+                    )
+
+                elif kraftstoff.lower() in ["elektro/hybrid", "hybrid"]:
+                    selected_sprit = auto_selectbox_single(
+                        "Kraftstoff",
+                        sprit_arten,
+                        key=f"sprit_{car_index}",
+                        placeholder="Bitte wählen",
+                    )
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("**Verbrenner:**")
                         verbrauch_input = st.number_input(
                             "Verbrauch (L/100km)",
-                            value=round(verbrauch_l, 1),
+                            value=round(verbrauch_l_default, 1),
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
                             key=f"verbrauch_l_{car_index}",
                         )
-
-                    elif kraftstoff.lower() == "diesel":
-                        selected_sprit = st.selectbox(
-                            "Kraftstoff",
-                            ["Diesel"],
-                            index=0,
-                            key=f"sprit_{car_index}",
-                        )
-                        verbrauch_input = st.number_input(
-                            "Verbrauch (L/100km)",
-                            value=round(verbrauch_l, 1),
-                            min_value=0.0,
-                            step=0.1,
-                            format="%.1f",
-                            key=f"verbrauch_diesel_{car_index}",
-                        )
-
-                    elif kraftstoff.lower() == "elektro":
-                        selected_sprit = "Strom"  # fix
-                        st.selectbox(
-                            "Kraftstoff",
-                            ["Strom"],
-                            index=0,
-                            key=f"sprit_{car_index}",
-                            disabled=True,
-                        )
-                        verbrauch_input = st.number_input(
+                    with col2:
+                        st.markdown("**E-Motor:**")
+                        verbrauch_input_strom = st.number_input(
                             "Verbrauch (kWh/100km)",
-                            value=round(verbrauch_kwh, 1),
+                            value=round(verbrauch_kwh_default, 1),
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
                             key=f"verbrauch_kwh_{car_index}",
                         )
-
-                    elif kraftstoff.lower() in ["elektro/hybrid", "hybrid"]:
-                        selected_sprit = st.selectbox(
-                            "Kraftstoff",
-                            sprit_arten,
-                            index=0,
-                            key=f"sprit_hybrid_{car_index}",
-                        )
-                        col1, col2 = st.columns(2)
-                        with col1:
-                            st.markdown("**Verbrenner:**")
-                            verbrauch_input = st.number_input(
-                                "Verbrauch (L/100km)",
-                                value=round(verbrauch_l, 1),
-                                min_value=0.0,
-                                step=0.1,
-                                format="%.1f",
-                                key=f"verbrauch_l_hybrid_{car_index}",
-                            )
-                        with col2:
-                            st.markdown("**E-Motor:**")
-                            verbrauch_input_strom = st.number_input(
-                                "Verbrauch (kWh/100km)",
-                                value=round(verbrauch_kwh, 1),
-                                min_value=0.0,
-                                step=0.1,
-                                format="%.1f",
-                                key=f"verbrauch_kwh_hybrid_{car_index}",
-                            )
+                else:
+                    # unbekannter Kraftstoff → alles deaktiviert
+                    st.selectbox(
+                        "Kraftstoff",
+                        [],
+                        index=None,
+                        placeholder="Keine Daten",
+                        key=f"sprit_{car_index}",
+                        disabled=True,
+                    )
+                    verbrauch_input = st.number_input(
+                        "Verbrauch (L/100km)",
+                        value=0.0,
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_l_{car_index}",
+                        disabled=True,
+                    )
+                    verbrauch_input_strom = st.number_input(
+                        "Verbrauch (kWh/100km)",
+                        value=0.0,
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_kwh_{car_index}",
+                        disabled=True,
+                    )
+            else:
+                # Kein Motor gewählt → Felder anzeigen, aber ohne Auswahl / 0-Werte
+                st.selectbox(
+                    "Kraftstoff",
+                    [],
+                    index=None,
+                    placeholder="Bitte zuerst Motor wählen",
+                    key=f"sprit_{car_index}",
+                    disabled=True,
+                )
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown("**Verbrenner:**")
+                    verbrauch_input = st.number_input(
+                        "Verbrauch (L/100km)",
+                        value=0.0,
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_l_{car_index}",
+                        disabled=True,
+                    )
+                with col2:
+                    st.markdown("**E-Motor:**")
+                    verbrauch_input_strom = st.number_input(
+                        "Verbrauch (kWh/100km)",
+                        value=0.0,
+                        min_value=0.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"verbrauch_kwh_{car_index}",
+                        disabled=True,
+                    )
 
             # Leasingoptionen filtern nach Kategorie des gewählten Motors
             passende_leasing = pd.DataFrame()
-            if selected_engine:
-                motor_info = autos[
-                    (autos["Modell"] == selected_model)
-                    & (autos["Ausstattungslinie"] == selected_variation)
-                    & (autos["Motor"] == selected_engine)
-                ]
+            if has_motor:
+                kategorie = motor_info["Kategorie"].values[0]  # Verbrenner / Elektro/Hybrid
+                motor_str = motor_info["Motor"].values[0]
+                bedingung_key = get_leasing_bedingung(selected_model, kategorie, motor_str)
+                passende_leasing = leasing[leasing["Bedingung"] == bedingung_key]
 
-                if not motor_info.empty:
-                    kategorie = motor_info["Kategorie"].values[0]  # Verbrenner / Elektro/Hybrid
-                    motor_str = motor_info["Motor"].values[0]
-                    bedingung_key = get_leasing_bedingung(selected_model, kategorie, motor_str)
-
-                    passende_leasing = leasing[leasing["Bedingung"] == bedingung_key]
-                else:
-                    passende_leasing = pd.DataFrame()
-
-
-            selected_leasing = st.selectbox(
-                "Leasingoption",
+            leasing_options = (
                 passende_leasing["Leasingoption"].unique()
                 if not passende_leasing.empty
-                else [],
-                index=None,
-                placeholder="Bitte wählen",
-                key=f"leasing_{car_index}",
+                else []
             )
 
-            adjusted_km = 0
+            # Leasingoption: auto-select wenn nur 1, sonst leer
+            selected_leasing = auto_selectbox_single(
+                "Leasingoption",
+                leasing_options,
+                key=f"leasing_{car_index}",
+                placeholder="Bitte wählen",
+            )
+
+            # Freikilometer / Laufzeit (für Kostenrechnung)
+            standard_km = 0
             laufzeit = 0
 
             if selected_leasing:
@@ -482,17 +688,15 @@ for row in range(rows):
                     leasing_row_pre = leasing_row_pre.iloc[0]
                     standard_km = leasing_row_pre["Freikilometer"]
                     laufzeit = int(leasing_row_pre["Laufzeit"])
-                else:
-                    standard_km = 0
-                    laufzeit = 0
 
-                adjusted_km = st.number_input(
-                    "Kilometer anpassen",
-                    value=int(standard_km),
-                    min_value=0,
-                    step=1000,
-                    key=f"km_{car_index}",
-                )
+            # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+            adjusted_km = st.number_input(
+                "Kilometer anpassen",
+                value=int(standard_km),
+                min_value=0,
+                step=1000,
+                key=f"km_{car_index}",
+            )
 
             # Beschreibung des Autos
             st.markdown("**Optional:**")
@@ -504,13 +708,13 @@ for row in range(rows):
             )
 
             # --- Button: Auto ins Ranking übernehmen ---
-            if st.button("In Ranking übernehmen", key=f"rank_{car_index}"):
+            if st.button("Ranking aktualisieren", key=f"rank_{car_index}"):
                 if not (
                     selected_model
                     and selected_variation
                     and selected_engine
                     and selected_leasing
-                    and kraftstoff
+                    and has_motor
                 ):
                     st.warning(
                         "Bitte Modell, Ausstattung, Motor und Leasingoption auswählen."
@@ -527,7 +731,7 @@ for row in range(rows):
                         leasing_row = leasing_row.iloc[0]
 
                         try:
-                            leasingrate_faktor = float(leasing_row["Leasingrate"])/100
+                            leasingrate_faktor = float(leasing_row["Leasingrate"]) / 100
                         except KeyError:
                             st.error(
                                 "Spalte 'Leasingrate' in leasing.csv nicht gefunden – bitte Spaltennamen im Code anpassen."
@@ -535,56 +739,70 @@ for row in range(rows):
                             leasingrate_faktor = 0.0
 
                         laufzeit_monate = int(leasing_row["Laufzeit"])
-                        km_jahr = adjusted_km
+                        freikilometer = adjusted_km
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        # # -------------------------
+                        # # Spritkosten / Monat
+                        # # -------------------------
+                        # spritkosten_pro_monat = 0.0
 
-                        # -------------------------
-                        # Spritkosten / Monat
-                        # -------------------------
-                        spritkosten_pro_monat = 0.0
+                        # if kraftstoff.lower() in ["benzin", "diesel"]:
+                        #     spritpreis = spritpreise.get(selected_sprit, 0.0)
+                        #     spritkosten_pro_monat = (
+                        #         freikilometer / 100.0 * verbrauch_input * spritpreis / laufzeit_monate
+                        #     )
 
-                        if kraftstoff.lower() in ["benzin", "diesel"]:
-                            spritpreis = spritpreise.get(selected_sprit, 0.0)
-                            spritkosten_pro_monat = (
-                                km_jahr / 100.0 * verbrauch_input * spritpreis / 12.0
-                            )
+                        # elif kraftstoff.lower() == "elektro":
+                        #     strompreis = spritpreise.get("Strom", 0.0)
+                        #     spritkosten_pro_monat = (
+                        #         freikilometer / 100.0 * verbrauch_input_strom * strompreis / laufzeit_monate
+                        #     )
 
-                        elif kraftstoff.lower() == "elektro":
-                            strompreis = spritpreise.get("Strom", 0.0)
-                            spritkosten_pro_monat = (
-                                km_jahr / 100.0 * verbrauch_input * strompreis / 12.0
-                            )
+                        # elif kraftstoff.lower() in ["elektro/hybrid", "hybrid"]:
+                        #     spritpreis = spritpreise.get(selected_sprit, 0.0)
+                        #     strompreis = spritpreise.get("Strom", 0.0)
+                        #     kosten_benzin = (
+                        #         freikilometer / 100.0 * verbrauch_input * spritpreis / laufzeit_monate
+                        #     )
+                        #     kosten_strom = (
+                        #         freikilometer
+                        #         / 100.0
+                        #         * verbrauch_input_strom
+                        #         * strompreis
+                        #         / laufzeit_monate
+                        #     )
+                        #     spritkosten_pro_monat = kosten_benzin + kosten_strom
 
-                        elif kraftstoff.lower() in ["elektro/hybrid", "hybrid"]:
-                            spritpreis = spritpreise.get(selected_sprit, 0.0)
-                            strompreis = spritpreise.get("Strom", 0.0)
-                            kosten_benzin = (
-                                km_jahr / 100.0 * verbrauch_input * spritpreis / 12.0
-                            )
-                            kosten_strom = (
-                                km_jahr
-                                / 100.0
-                                * verbrauch_input_strom
-                                * strompreis
-                                / 12.0
-                            )
-                            spritkosten_pro_monat = kosten_benzin + kosten_strom
+                        # # -------------------------
+                        # # Leasingkosten / Monat (UVP * Leasingrate-Faktor)
+                        # # -------------------------
+                        # leasingkosten_pro_monat = uvp * leasingrate_faktor
 
-                        # -------------------------
-                        # Leasingkosten / Monat (UVP * Leasingrate-Faktor)
-                        # -------------------------
-                        leasingkosten_pro_monat = uvp * leasingrate_faktor
+                        # # Leasingkosten (Gesamt)
+                        # leasingkosten_gesamt = leasingkosten_pro_monat * laufzeit_monate
 
-                        # Leasingkosten (Gesamt)
-                        leasingkosten_gesamt = leasingkosten_pro_monat * laufzeit_monate
+                        # # Spritkosten (Gesamt)
+                        # spritkosten_gesamt = spritkosten_pro_monat * laufzeit_monate
 
-                        # Spritkosten (Gesamt)
-                        spritkosten_gesamt = spritkosten_pro_monat * laufzeit_monate
+                        # # Gesamtkosten / Monat
+                        # gesamtkosten_pro_monat = (
+                        #     leasingkosten_pro_monat + spritkosten_pro_monat
+                        # )
 
-                        # Gesamtkosten / Monat
-                        gesamtkosten_pro_monat = leasingkosten_pro_monat + spritkosten_pro_monat
-
-                        # Kosten (Gesamt)
-                        kosten_gesamt = gesamtkosten_pro_monat * laufzeit_monate
+                        # # Kosten (Gesamt)
+                        # kosten_gesamt = gesamtkosten_pro_monat * laufzeit_monate
+                        
+                        
+                        
+                        
+                        
+                        
 
                         # alten Eintrag für diesen Slot entfernen
                         st.session_state["ranking"] = [
@@ -593,7 +811,7 @@ for row in range(rows):
                             if r.get("Slot") != car_index + 1
                         ]
 
-                        # neuen Eintrag hinzufügen
+                        # neuen Eintrag hinzufügen – NUR Basisdaten
                         st.session_state["ranking"].append(
                             {
                                 "Bild": bild,
@@ -603,15 +821,15 @@ for row in range(rows):
                                 "Motor": selected_engine,
                                 "UVP": uvp,
                                 "Leasingoption": selected_leasing,
+                                "Freikilometer":            freikilometer,
                                 "Kraftstoff": kraftstoff,
                                 "Sprit": selected_sprit,
-                                "Leasingkosten / Monat": round(leasingkosten_pro_monat, 2),
-                                "Leasingkosten (Gesamt)": round(leasingkosten_gesamt, 2),
-                                "Spritkosten / Monat": round(spritkosten_pro_monat, 2),
-                                "Spritkosten (Gesamt)": round(spritkosten_gesamt, 2),
-                                "Gesamtkosten / Monat": round(gesamtkosten_pro_monat, 2),
-                                "Kosten (Gesamt)": round(kosten_gesamt, 2),
                                 "Beschreibung": description,
+                    
+                                "Verbrauch_L_100":          verbrauch_input,
+                                "Verbrauch_kWh_100":        verbrauch_input_strom,
+                                "Laufzeit_Monate":          laufzeit_monate,
+                                "Leasingrate_Faktor":       leasingrate_faktor,
                             }
                         )
 

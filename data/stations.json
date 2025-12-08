@@ -1,5 +1,17 @@
 [
   {
+    "id": "d55cf695-fc95-4a10-bc2b-3acf835c74bf",
+    "name": "Raiffeisen Waren GmbH",
+    "brand": "Raiffeisen",
+    "street": "Maschweg",
+    "house_number": "2",
+    "post_code": 38477,
+    "place": "Jembke",
+    "lat": 52.49908,
+    "lng": 10.76281,
+    "isOpen": true
+  },
+  {
     "id": "720e0a99-fe07-4824-a734-ac40544f633f",
     "name": "Aral Tankstelle",
     "brand": "ARAL",
@@ -36,42 +48,6 @@
     "isOpen": true
   },
   {
-    "id": "42f01e8b-ec07-4844-a39d-8b75a525d90b",
-    "name": "Aral Tankstelle",
-    "brand": "ARAL",
-    "street": "Wolfsburger Straße",
-    "house_number": "41",
-    "post_code": 38448,
-    "place": "Wolfsburg",
-    "lat": 52.438274,
-    "lng": 10.830318,
-    "isOpen": true
-  },
-  {
-    "id": "005056ba-7cb6-1ed2-bceb-79dff61a8d26",
-    "name": "star Tankstelle",
-    "brand": "STAR",
-    "street": "Schulenburgallee",
-    "house_number": "2",
-    "post_code": 38448,
-    "place": "Wolfsburg",
-    "lat": 52.440433,
-    "lng": 10.807963,
-    "isOpen": true
-  },
-  {
-    "id": "b71f5848-5f69-11ed-8c93-005056a27fa7",
-    "name": "CLASSIC Wolfsburg Hubertusstraße",
-    "brand": "CLASSIC",
-    "street": "Hubertusstraße",
-    "house_number": "8",
-    "post_code": 38448,
-    "place": "Wolfsburg",
-    "lat": 52.45091,
-    "lng": 10.79599,
-    "isOpen": true
-  },
-  {
     "id": "fb48f03e-c16e-435d-a845-6e235612f88f",
     "name": "Shell Wolfsburg Heinrich-Nordhoff Str. 119-121",
     "brand": "Shell",
@@ -81,30 +57,6 @@
     "place": "Wolfsburg",
     "lat": 52.426201,
     "lng": 10.768519,
-    "isOpen": true
-  },
-  {
-    "id": "6f5f00c9-f3d2-11e9-b0e4-005056a2a083",
-    "name": "CLASSIC Wolfsburg Breslauer Str.",
-    "brand": "CLASSIC",
-    "street": "Breslauer Str.",
-    "house_number": "45",
-    "post_code": 38440,
-    "place": "Wolfsburg",
-    "lat": 52.41918,
-    "lng": 10.75416,
-    "isOpen": true
-  },
-  {
-    "id": "fc549e08-daf7-4dd1-8cf0-49cbf3f0bb92",
-    "name": "Bft Wolfsburg Breslauer Straße 221",
-    "brand": "bft",
-    "street": "Breslauer Straße",
-    "house_number": "221",
-    "post_code": 38440,
-    "place": "Wolfsburg",
-    "lat": 52.4161,
-    "lng": 10.7517,
     "isOpen": true
   },
   {
@@ -144,87 +96,27 @@
     "isOpen": true
   },
   {
-    "id": "01b50dfd-5470-431b-b209-bbc9f1f69681",
-    "name": "LEO Wolfsburg-Vorsfelde",
-    "brand": "LEO",
-    "street": "Carl-Grete-Str.",
-    "house_number": "34",
-    "post_code": 38448,
-    "place": "Wolfsburg",
-    "lat": 52.4457,
-    "lng": 10.8354,
-    "isOpen": true
-  },
-  {
-    "id": "551a96b8-9cc1-4726-9279-acfecf1e228b",
+    "id": "42f01e8b-ec07-4844-a39d-8b75a525d90b",
     "name": "Aral Tankstelle",
     "brand": "ARAL",
-    "street": "Hinterm Hagen",
-    "house_number": "21",
-    "post_code": 38442,
+    "street": "Wolfsburger Straße",
+    "house_number": "41",
+    "post_code": 38448,
     "place": "Wolfsburg",
-    "lat": 52.419117,
-    "lng": 10.721299,
+    "lat": 52.438274,
+    "lng": 10.830318,
     "isOpen": true
   },
   {
-    "id": "005056ba-7cb6-1ed2-bceb-6e004fe9cd20",
+    "id": "005056ba-7cb6-1ed2-bceb-79dff61a8d26",
     "name": "star Tankstelle",
     "brand": "STAR",
-    "street": "Viehtrift",
-    "house_number": "18",
-    "post_code": 38442,
+    "street": "Schulenburgallee",
+    "house_number": "2",
+    "post_code": 38448,
     "place": "Wolfsburg",
-    "lat": 52.420299,
-    "lng": 10.711243,
-    "isOpen": true
-  },
-  {
-    "id": "66f8583b-127a-4298-9782-149a3a87dc30",
-    "name": "Shell Wolfsburg Braunschweiger Str. 89",
-    "brand": "Shell",
-    "street": "Braunschweiger Str.",
-    "house_number": "89",
-    "post_code": 38440,
-    "place": "Wolfsburg",
-    "lat": 52.411998,
-    "lng": 10.782174,
-    "isOpen": true
-  },
-  {
-    "id": "51a1160e-0a82-4179-99a7-09cd0d0c20b1",
-    "name": "Shell Wolfsburg Braunschweiger Str. 208",
-    "brand": "Shell",
-    "street": "Braunschweiger Str.",
-    "house_number": "208",
-    "post_code": 38444,
-    "place": "Wolfsburg",
-    "lat": 52.400652,
-    "lng": 10.752286,
-    "isOpen": true
-  },
-  {
-    "id": "0b77096c-801b-4417-ac06-44ec8246b28b",
-    "name": "Shell Wolfsburg Braunschweiger Str. 201-203",
-    "brand": "Shell",
-    "street": "Braunschweiger Str.",
-    "house_number": "201-203",
-    "post_code": 38444,
-    "place": "Wolfsburg",
-    "lat": 52.399986,
-    "lng": 10.754061,
-    "isOpen": true
-  },
-  {
-    "id": "ad4f2ed6-c44e-4f8f-9ae6-a4ec955dfb60",
-    "name": "Shell Wolfsburg Nordsteimker Str. 7-9",
-    "brand": "Shell",
-    "street": "Nordsteimker Str.",
-    "house_number": "7-9",
-    "post_code": 38446,
-    "place": "Wolfsburg",
-    "lat": 52.417518,
-    "lng": 10.805122,
+    "lat": 52.440433,
+    "lng": 10.807963,
     "isOpen": true
   }
 ]

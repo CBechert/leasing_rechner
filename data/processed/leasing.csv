@@ -1,26 +1,26 @@
-Leasingoption;Leasingrate;Laufzeit;Freikilometer;Tankguthaben;Bedingung
-0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner|T-Roc Cabriolet
-0.8 % | 12 Monate  | 30000 km;0.8;12;30000;0;Verbrenner|T-Roc Cabriolet
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner|Rest
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner|Rest
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid|Golf
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid|Golf
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid|Tiguan
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid|Tiguan
-0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Elektro/Hybrid|Rest
-0.9 % | 12 Monate  | 30000 km;0.9;12;30000;0;Elektro/Hybrid|Rest
-0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner|Caddy
-1.1 % | 6 Monate  | 15000 km;1.1;6;15000;0;Verbrenner|Multivan
-1.1 % | 12 Monate  | 30000 km;1.1;12;30000;0;Verbrenner|Multivan
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner|California
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner|California
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner|Grand California
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner|Grand California
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid|Caddy
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid|Caddy
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid|Multivan
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid|Multivan
-0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid|California
-1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid|California
-1.0 % | 6 Monate  | 15000 km;1.0;6;15000;0;Elektro/Hybrid|ID. Buzz
-1.1 % | 12 Monate  | 30000 km;1.1;12;30000;0;Elektro/Hybrid|ID. Buzz
+Leasingoption;Leasingrate;Laufzeit;Freikilometer;Tankguthaben;Bedingung Kraftstoff;Bedingung Modell
+0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;T-Roc Cabriolet
+0.8 % | 12 Monate  | 30000 km;0.8;12;30000;0;Verbrenner;T-Roc Cabriolet
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner;Rest
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Rest
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid;Golf
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid;Golf
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid;Tiguan
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid;Tiguan
+0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Elektro/Hybrid;Rest
+0.9 % | 12 Monate  | 30000 km;0.9;12;30000;0;Elektro/Hybrid;Rest
+0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;Caddy
+1.1 % | 6 Monate  | 15000 km;1.1;6;15000;0;Verbrenner;Multivan
+1.1 % | 12 Monate  | 30000 km;1.1;12;30000;0;Verbrenner;Multivan
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner;California
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;California
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner;Grand California
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Grand California
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid;Caddy
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid;Caddy
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid;Multivan
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid;Multivan
+0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Elektro/Hybrid;California
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Elektro/Hybrid;California
+1.0 % | 6 Monate  | 15000 km;1.0;6;15000;0;Elektro/Hybrid;ID. Buzz
+1.1 % | 12 Monate  | 30000 km;1.1;12;30000;0;Elektro/Hybrid;ID. Buzz

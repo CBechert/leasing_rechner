@@ -17,39 +17,25 @@ API_BASE = "https://creativecommons.tankerkoenig.de/json"
 API_KEY = st.secrets["tankerkoenig"]["api_key"]
 
 
-def get_leasing_bedingung(modell: str, kategorie: str, motor: str) -> str:
-    """
-    modell: z.B. 'Golf', 'Tiguan', 'Caddy', 'ID. Buzz', ...
-    kategorie: 'Verbrenner' oder 'Elektro/Hybrid' (aus autos.csv)
-    motor: kompletter Motor-String, um eHybrid zu erkennen
-    """
+def find_leasing_bedingung(leasing_df, kategorie: str, modell: str) -> str:
+    # 1) Versuch: exakte Regel vorhanden?
+    mask_exact = (
+        (leasing_df["Bedingung Kraftstoff"] == kategorie)
+        & (leasing_df["Bedingung Modell"] == modell)
+    )
+    if leasing_df[mask_exact].shape[0] > 0:
+        return kategorie, modell
 
-    # Verbrenner-Regeln
-    if kategorie == "Verbrenner":
-        # Nutzfahrzeug-Sonderfälle
-        if modell in {"Caddy", "Multivan", "California", "Grand California"}:
-            return f"Verbrenner|{modell}"
+    # 2) Fallback: "Rest" für diese Kategorie
+    mask_rest = (
+        (leasing_df["Bedingung Kraftstoff"] == kategorie)
+        & (leasing_df["Bedingung Modell"] == "Rest")
+    )
+    if leasing_df[mask_rest].shape[0] > 0:
+        return kategorie, "Rest"
 
-        # Restliche Verbrenner (PKW etc.)
-        return "Verbrenner|Rest"
-
-    # Elektro/Hybrid-Regeln
-    if kategorie == "Elektro/Hybrid":
-        # Sonderfall Golf eHybrid / Tiguan eHybrid
-        if modell == "Golf" and "eHybrid" in motor:
-            return "Elektro/Hybrid|Golf"
-        if modell == "Tiguan" and "eHybrid" in motor:
-            return "Elektro/Hybrid|Tiguan"
-
-        # Nutzfahrzeug-Elektro/Hybrid (Caddy eHybrid, Multivan eHybrid, California eHybrid, ID. Buzz)
-        if modell in {"Caddy", "Multivan", "California", "ID. Buzz"}:
-            return f"Elektro/Hybrid|{modell}"
-
-        # Restliche Elektro/Hybrid (ID.3, ID.4, ID.5, Passat eHybrid etc.)
-        return "Elektro/Hybrid|Rest"
-
-    # Fallback
-    return "Verbrenner|Rest"
+    # 3) ganz harter Fallback
+    return kategorie, modell  # oder ( "Verbrenner", "Rest" ) o.ä.
 
 
 # --- Daten laden + ETL, mit Cache ---
@@ -659,8 +645,14 @@ for row in range(rows):
             if has_motor:
                 kategorie = motor_info["Kategorie"].values[0]  # Verbrenner / Elektro/Hybrid
                 motor_str = motor_info["Motor"].values[0]
-                bedingung_key = get_leasing_bedingung(selected_model, kategorie, motor_str)
-                passende_leasing = leasing[leasing["Bedingung"] == bedingung_key]
+                bedingung_kraftstoff, bedingung_modell = find_leasing_bedingung(
+                leasing, kategorie, selected_model
+                )
+
+                passende_leasing = leasing[
+                    (leasing["Bedingung Kraftstoff"] == bedingung_kraftstoff)
+                    & (leasing["Bedingung Modell"] == bedingung_modell)
+                ]
 
             leasing_options = (
                 passende_leasing["Leasingoption"].unique()
@@ -741,68 +733,6 @@ for row in range(rows):
                         laufzeit_monate = int(leasing_row["Laufzeit"])
                         freikilometer = adjusted_km
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        # # -------------------------
-                        # # Spritkosten / Monat
-                        # # -------------------------
-                        # spritkosten_pro_monat = 0.0
-
-                        # if kraftstoff.lower() in ["benzin", "diesel"]:
-                        #     spritpreis = spritpreise.get(selected_sprit, 0.0)
-                        #     spritkosten_pro_monat = (
-                        #         freikilometer / 100.0 * verbrauch_input * spritpreis / laufzeit_monate
-                        #     )
-
-                        # elif kraftstoff.lower() == "elektro":
-                        #     strompreis = spritpreise.get("Strom", 0.0)
-                        #     spritkosten_pro_monat = (
-                        #         freikilometer / 100.0 * verbrauch_input_strom * strompreis / laufzeit_monate
-                        #     )
-
-                        # elif kraftstoff.lower() in ["elektro/hybrid", "hybrid"]:
-                        #     spritpreis = spritpreise.get(selected_sprit, 0.0)
-                        #     strompreis = spritpreise.get("Strom", 0.0)
-                        #     kosten_benzin = (
-                        #         freikilometer / 100.0 * verbrauch_input * spritpreis / laufzeit_monate
-                        #     )
-                        #     kosten_strom = (
-                        #         freikilometer
-                        #         / 100.0
-                        #         * verbrauch_input_strom
-                        #         * strompreis
-                        #         / laufzeit_monate
-                        #     )
-                        #     spritkosten_pro_monat = kosten_benzin + kosten_strom
-
-                        # # -------------------------
-                        # # Leasingkosten / Monat (UVP * Leasingrate-Faktor)
-                        # # -------------------------
-                        # leasingkosten_pro_monat = uvp * leasingrate_faktor
-
-                        # # Leasingkosten (Gesamt)
-                        # leasingkosten_gesamt = leasingkosten_pro_monat * laufzeit_monate
-
-                        # # Spritkosten (Gesamt)
-                        # spritkosten_gesamt = spritkosten_pro_monat * laufzeit_monate
-
-                        # # Gesamtkosten / Monat
-                        # gesamtkosten_pro_monat = (
-                        #     leasingkosten_pro_monat + spritkosten_pro_monat
-                        # )
-
-                        # # Kosten (Gesamt)
-                        # kosten_gesamt = gesamtkosten_pro_monat * laufzeit_monate
-                        
-                        
-                        
-                        
-                        
-                        
 
                         # alten Eintrag für diesen Slot entfernen
                         st.session_state["ranking"] = [
@@ -825,7 +755,6 @@ for row in range(rows):
                                 "Kraftstoff": kraftstoff,
                                 "Sprit": selected_sprit,
                                 "Beschreibung": description,
-                    
                                 "Verbrauch_L_100":          verbrauch_input,
                                 "Verbrauch_kWh_100":        verbrauch_input_strom,
                                 "Laufzeit_Monate":          laufzeit_monate,

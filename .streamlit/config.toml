@@ -1,16 +1,22 @@
 [theme]
 base = "dark"
 
+# Light Theme (Primary: Deep Space Blue, Accent: Vivid Green)
 [theme.light]
-primaryColor = "#1E88E5"
-backgroundColor = "#FFFFFF"
-textColor = "#000000"
+primaryColor = "#002733"                # Deep Space Blue
+backgroundColor = "#FFFFFF"             # Reinweiß
+secondaryBackgroundColor = "#E7F3F3"    # Helle Tint aus Palette
+textColor = "#0F1F2F"                   # Dunkles Petrol für Text
+font = "sans serif"
 
+# Dark Theme (Primary: Vivid Green, Accent: Electric Neon on dark)
 [theme.dark]
-primaryColor = "#BB86FC"
-backgroundColor = "#121212"
-textColor = "#FFFFFF"
+primaryColor = "#008C82"
+backgroundColor = "#0C1626"
+secondaryBackgroundColor = "#102537"
+textColor = "#E6EEF1"
+font = "sans serif"
 
 [theme.dark.sidebar]
-backgroundColor = "#181818"
-borderColor = "#333333"
+backgroundColor = "#0F1F2F"
+borderColor = "#008C82"

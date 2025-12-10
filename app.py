@@ -486,7 +486,7 @@ for row in range(rows):
                 disabled=not has_motor,
             )
 
-            # --- Kraftstoff + Verbrauch: immer Felder anzeigen ---
+            # --- Kraftstoff + Verbrauch ---
             sprit_arten = ["Super E10", "Super E5", "Super+"]
             selected_sprit = None
             verbrauch_input = 0.0       # L/100km
@@ -669,8 +669,10 @@ for row in range(rows):
             )
 
             # Freikilometer / Laufzeit (für Kostenrechnung)
-            standard_km = 0
-            laufzeit = 0
+            standard_km = 15000
+            laufzeit = 6
+            standard_rate = 0.9
+            col1, col2, col3 = st.columns(3)
 
             if selected_leasing:
                 leasing_row_pre = passende_leasing[
@@ -680,15 +682,66 @@ for row in range(rows):
                     leasing_row_pre = leasing_row_pre.iloc[0]
                     standard_km = leasing_row_pre["Freikilometer"]
                     laufzeit = int(leasing_row_pre["Laufzeit"])
-
-            # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
-            adjusted_km = st.number_input(
-                "Kilometer anpassen",
-                value=int(standard_km),
-                min_value=0,
-                step=1000,
-                key=f"km_{car_index}",
-            )
+                    standard_rate = float(leasing_row_pre["Leasingrate"])
+            
+            
+                with col1:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_rate = st.number_input(
+                        "Rate anpassen",
+                        value=float(standard_rate),
+                        min_value=0.1,
+                        max_value=1.0,
+                        step=0.1,
+                        format="%.1f",
+                        key=f"rate_{car_index}",
+                    )
+                with col2:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_time = st.number_input(
+                        "Laufzeit anpassen",
+                        value=int(laufzeit),
+                        min_value=6,
+                        max_value=12,
+                        step=6,
+                        key=f"time_{car_index}",
+                    )
+                with col3:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_km = st.number_input(
+                        "Kilometer anpassen",
+                        value=int(standard_km),
+                        min_value=0,
+                        step=1000,
+                        key=f"km_{car_index}",
+                    )
+            else:
+                with col1:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_rate = st.number_input(
+                        "Rate anpassen",
+                        value=0.0,
+                        format="%.1f",
+                        key=f"rate_{car_index}",
+                        disabled=True,
+                    )
+                with col2:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_time = st.number_input(
+                        "Laufzeit anpassen",
+                        value=0,
+                        key=f"time_{car_index}",
+                        disabled=True,
+                    )
+                with col3:
+                    # Kilometer-Eingabe: immer sichtbar, 0 solange keine Leasingoption
+                    adjusted_km = st.number_input(
+                        "Kilometer anpassen",
+                        value=0,
+                        key=f"km_{car_index}",
+                        disabled=True,
+                    )
+            
 
             # Beschreibung des Autos
             st.markdown("**Optional:**")
@@ -721,17 +774,13 @@ for row in range(rows):
                         )
                     else:
                         leasing_row = leasing_row.iloc[0]
-
-                        try:
-                            leasingrate_faktor = float(leasing_row["Leasingrate"]) / 100
-                        except KeyError:
-                            st.error(
-                                "Spalte 'Leasingrate' in leasing.csv nicht gefunden – bitte Spaltennamen im Code anpassen."
-                            )
-                            leasingrate_faktor = 0.0
-
-                        laufzeit_monate = int(leasing_row["Laufzeit"])
+                        
+                        leasingrate_faktor = adjusted_rate / 100
+                        laufzeit_monate = adjusted_time
                         freikilometer = adjusted_km
+                        
+                        
+                        
                         
 
                         # alten Eintrag für diesen Slot entfernen

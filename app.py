@@ -1,9 +1,10 @@
 import json
-from pathlib import Path
+import math
 
 import pandas as pd
 import requests
 import streamlit as st
+from streamlit_extras.stylable_container import stylable_container
 
 from src.config import PROCESSED_DIR, STATIONS_PATH
 
@@ -23,6 +24,35 @@ API_KEY = st.secrets["tankerkoenig"]["api_key"]
 # Globale Spritpreis-Tabelle, wird im Hauptteil befüllt
 spritpreise: dict[str, float] = {}
 
+# Farbpalette gemäß Vorgabe
+PRIMARY_DEEP = "#002733"
+PRIMARY_GREEN = "#008C82"
+ACCENT_NEON = "#C2FE06"  # nur auf dunklem Hintergrund nutzen
+SECONDARY_CORAL = "#E67364"
+SECONDARY_ORANGE = "#FAAA3C"
+SECONDARY_BEIGE = "#FAD2AA"
+SECONDARY_BLUE = "#8CBEE6"
+SECONDARY_VIOLET = "#C882BE"
+SECONDARY_LAVENDER = "#DCCDF0"
+TRAFFIC_RED = "#DA0C1F"
+TRAFFIC_AMBER = "#FCCD22"
+TRAFFIC_GREEN = "#63A844"
+
+# Aus Theme lesen (Light/Dark aus config.toml/Streamlit Settings)
+theme_base = st.get_option("theme.base") or "dark"
+dark_mode = theme_base == "dark"
+theme_bg = st.get_option("theme.backgroundColor") or ("#0C1626" if dark_mode else "#FFFFFF")
+theme_text = st.get_option("theme.textColor") or ("#E6EEF1" if dark_mode else "#0F1F2F")
+secondary_bg = st.get_option("theme.secondaryBackgroundColor") or ("#102537" if dark_mode else "#E7F3F3")
+theme_muted = "#9DB2B7" if dark_mode else "#4B5563"
+card_border = PRIMARY_GREEN if dark_mode else PRIMARY_DEEP
+accent_price = ACCENT_NEON if dark_mode else PRIMARY_GREEN
+top_gradient = (
+    f"linear-gradient(135deg, {PRIMARY_DEEP}, {PRIMARY_GREEN})"
+    if dark_mode
+    else "linear-gradient(135deg, #e7f3f3, #cde7e4)"
+)
+divider_html = f"<hr style='border: 1px solid {card_border}; opacity: 0.3;'/>"
 
 # =====================================================================
 # Hilfsfunktionen & Daten-Logik
@@ -91,6 +121,27 @@ def load_stations() -> list[dict]:
     with STATIONS_PATH.open("r", encoding="utf-8") as f:
         stations = json.load(f)
     return stations
+
+
+def clear_slot_state(slot_id: int) -> None:
+    """Entfernt UI-States für einen Slot, ohne andere Slots zu beeinflussen."""
+    keys = [
+        f"modell_{slot_id}",
+        f"variation_{slot_id}",
+        f"motor_{slot_id}",
+        f"uvp_{slot_id}",
+        f"sprit_{slot_id}",
+        f"verbrauch_l_{slot_id}",
+        f"verbrauch_kwh_{slot_id}",
+        f"leasing_{slot_id}",
+        f"rate_{slot_id}",
+        f"time_{slot_id}",
+        f"km_{slot_id}",
+        f"description_{slot_id}",
+    ]
+    for k in keys:
+        if k in st.session_state:
+            st.session_state.pop(k)
 
 
 def auto_selectbox_single(
@@ -304,14 +355,85 @@ autos, leasing = load_data()
 
 if "ranking" not in st.session_state:
     st.session_state["ranking"] = []  # Liste von Dicts
+if "ranking_updated" not in st.session_state:
+    st.session_state["ranking_updated"] = False
+if "ranking_message_slot" not in st.session_state:
+    st.session_state["ranking_message_slot"] = None
+if "ranking_message_text" not in st.session_state:
+    st.session_state["ranking_message_text"] = ""
 
 
 # =====================================================================
 # Header
 # =====================================================================
 
-st.markdown("<h1 style='text-align: center;'>🚗 Leasing Rechner App</h1>", unsafe_allow_html=True)
-st.markdown("---")
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background: {theme_bg};
+        color: {theme_text};
+    }}
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {{
+        color: {theme_text};
+    }}
+    .stApp p, .stApp li, .stApp label, .stApp span {{
+        color: {theme_text};
+    }}
+    .stCaption, .stMarkdown span {{
+        color: {theme_muted};
+    }}
+    [data-testid="stHeader"] {{
+        background: transparent;
+    }}
+    button[data-testid="baseButton-primary"] {{
+        background: {PRIMARY_GREEN};
+        color: #ffffff;
+        border-radius: 8px;
+        border: none;
+    }}
+    button[data-testid="baseButton-primary"]:hover {{
+        background: {PRIMARY_DEEP};
+        color: #ffffff;
+    }}
+    button[data-testid="baseButton-secondary"] {{
+        background: {SECONDARY_CORAL};
+        color: #0f1f2f;
+        border-radius: 8px;
+        border: none;
+    }}
+    button[data-testid="baseButton-secondary"]:hover {{
+        background: {TRAFFIC_RED};
+        color: #ffffff;
+    }}
+    .block-container {{
+        padding-top: 0.5rem;
+    }}
+    input, textarea, select, option, .stTextInput > div > div > input, .stSelectbox > div > div > select {{
+        color: {theme_text} !important;
+        background-color: {secondary_bg} !important;
+    }}
+    .stSelectbox > div > div, 
+    
+    .stNumberInput input, .stTextArea textarea {{
+    border: 1px solid {ACCENT_NEON} !important;
+    border-radius: 4px !important;
+}}
+
+    .stTextArea > div > div {{
+        border: 1px solid {ACCENT_NEON} !important;
+        border-radius: 4px !important;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    f"<h1 style='text-align: center; color:{PRIMARY_GREEN if not dark_mode else ACCENT_NEON};'>🚗 Leasing Rechner App</h1>",
+    unsafe_allow_html=True,
+)
+st.markdown(divider_html, unsafe_allow_html=True)
 
 
 # =====================================================================
@@ -361,19 +483,19 @@ with col2:
 
 if price_category == "Günstigste":
     st.markdown(
-        "<h2 style='text-align: center;'>⛽ Günstigste Spritpreise im Raum Wolfsburg 📉</h2>",
+        f"<h2 style='text-align: center; color:{theme_text}; letter-spacing:0.02em;'>⛽ Günstigste Spritpreise im Raum Wolfsburg 📉</h2>",
         unsafe_allow_html=True,
     )
     stats_key = "min"
 elif price_category == "Durchschnittliche":
     st.markdown(
-        "<h2 style='text-align: center;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>",
+        f"<h2 style='text-align: center; color:{theme_text}; letter-spacing:0.02em;'>⛽ Durchschnittliche Spritpreise im Raum Wolfsburg</h2>",
         unsafe_allow_html=True,
     )
     stats_key = "avg"
 else:
     st.markdown(
-        "<h2 style='text-align: center;'>⛽ Teuerste Spritpreise im Raum Wolfsburg 📈</h2>",
+        f"<h2 style='text-align: center; color:{theme_text}; letter-spacing:0.02em;'>⛽ Teuerste Spritpreise im Raum Wolfsburg 📈</h2>",
         unsafe_allow_html=True,
     )
     stats_key = "max"
@@ -413,11 +535,18 @@ except Exception as e:
 
 cols = st.columns(len(spritpreise))
 for i, (sorte, preis) in enumerate(spritpreise.items()):
+    card_style = (
+        f"text-align: center; background: {secondary_bg}; color: {theme_text}; "
+        f"font-family: 'Inter', sans-serif; font-size: 16px; padding: 12px; "
+        f"border-radius: 12px; border: 1px solid {card_border}; "
+        f"box-shadow: 0 10px 24px rgba(0,0,0,0.12);"
+    )
+    price_color = ACCENT_NEON if dark_mode else PRIMARY_GREEN
     if sorte != "Strom":
         cols[i].markdown(
             f"""
-            <div style='text-align: center; background-color: black; color: white; font-family: monospace; font-size: 16px; padding: 10px; border-radius: 8px;'>
-                {sorte}<br><span style='font-size:36px; color: lime'>{preis:.2f} €</span>
+            <div style="{card_style}">
+                {sorte}<br><span style='font-size:34px; font-weight:700; color:{price_color};'>{preis:.2f} €</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -425,8 +554,8 @@ for i, (sorte, preis) in enumerate(spritpreise.items()):
     else:
         cols[i].markdown(
             f"""
-            <div style='text-align: center; background-color: black; color: white; font-family: monospace; font-size: 16px; padding: 10px; border-radius: 8px;'>
-                {sorte}<br><span style='font-size:36px; color: yellow'>{preis:.2f} €</span>
+            <div style="{card_style}">
+                {sorte}<br><span style='font-size:34px; font-weight:700; color:{price_color};'>{preis:.2f} €</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -440,7 +569,7 @@ st.caption(
     "Alle Angaben ohne Gewähr."
 )
 
-st.markdown("---")
+st.markdown(divider_html, unsafe_allow_html=True)
 
 
 # =====================================================================
@@ -448,7 +577,7 @@ st.markdown("---")
 # =====================================================================
 
 st.markdown(
-    "<h2 style='text-align: center;'>🏆 Ranking</h2>",
+    f"<h2 style='text-align: center; color:{theme_text}; letter-spacing:0.02em;'>🏆 Ranking</h2>",
     unsafe_allow_html=True,
 )
 
@@ -460,25 +589,6 @@ if st.session_state["ranking"]:
 
     ranking_df = ranking_df.sort_values("Gesamtkosten / Monat", ascending=True)
 
-    relevante_spalten = [
-        "Bild",
-        "Slot",
-        "Modell",
-        "Ausstattungslinie",
-        "Motor",
-        "UVP",
-        "Leasingoption",
-        "Kraftstoff",
-        "Sprit",
-        "Leasingkosten / Monat",
-        "Leasingkosten (Gesamt)",
-        "Spritkosten / Monat",
-        "Spritkosten (Gesamt)",
-        "Gesamtkosten / Monat",
-        "Kosten (Gesamt)",
-        "Beschreibung",
-    ]
-
     geld_spalten = [
         "UVP",
         "Leasingkosten / Monat",
@@ -489,16 +599,135 @@ if st.session_state["ranking"]:
         "Kosten (Gesamt)",
     ]
 
-    st.dataframe(
-        ranking_df[relevante_spalten],
-        column_config={
-            "Bild": st.column_config.ImageColumn(),
-            **{
-                col: st.column_config.NumberColumn(format="€%d")
-                for col in geld_spalten
-            },
-        },
+    # Umschaltbare Ansichten fürs Ranking: kompakt vs. alle Details
+    basis_spalten = [
+        "Slot",
+        "Bild",
+        "Modell",
+        "Ausstattungslinie",
+        "Motor",
+        "Kraftstoff",
+        "Sprit",
+        "Leasingrate_Faktor",
+        "Laufzeit_Monate",
+        "Freikilometer",
+        "UVP",
+        "Verbrauch (L/100km)",
+        "Verbrauch (kWh/100km)",
+        "Leasingkosten / Monat",
+        "Leasingkosten (Gesamt)",
+        "Spritkosten / Monat",
+        "Spritkosten (Gesamt)",
+        "Gesamtkosten / Monat",
+        "Kosten (Gesamt)",
+        "Beschreibung",
+    ]
+
+    rest_spalten = [col for col in ranking_df.columns if col not in basis_spalten]
+    alle_spalten = basis_spalten + rest_spalten
+
+    # Top 3 Highlight
+    top3 = ranking_df.head(3)
+    if not top3.empty:
+        top_cols = st.columns(len(top3))
+        for idx, (_, row) in enumerate(top3.iterrows()):
+            bild = row.get("Bild", "")
+            kosten_monat = math.ceil(row.get("Gesamtkosten / Monat", 0) or 0)
+            modell = row.get("Modell", "Unbekannt")
+            linie = row.get("Ausstattungslinie", "")
+            motor = row.get("Motor", "")
+
+            card_html = f"""
+            <div style="
+                background: {top_gradient};
+                color: {theme_text};
+                border-radius: 16px;
+                padding: 16px;
+                box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+                text-align: center;
+                height: 100%;
+            ">
+                <div style="font-size: 14px; opacity: 0.8; letter-spacing: 0.05em;">Platz {idx + 1}</div>
+                <div style="font-size: 18px; font-weight: 700; margin: 6px 0 2px 0;">{modell}</div>
+                <div style="font-size: 18px; font-weight: 700; margin: 6px 0 2px 0;">{linie}</div>
+                <div style="font-size: 13px; opacity: 0.8; margin-bottom: 10px;">{motor}</div>
+                <div style="margin-bottom: 12px;">
+                    {"<img src='" + bild + "' style='max-width:100%; border-radius:12px; background:#ffffff;' />" if bild else f"<div style='height:120px; border-radius:12px; background:{secondary_bg}; display:flex; align-items:center; justify-content:center; color:{theme_muted};'>Kein Bild</div>"}
+                </div>
+                <div style="font-size: 13px; opacity: 0.8;">Gesamtkosten / Monat</div>
+                <div style="font-size: 24px; font-weight: 800; color: {accent_price};">€ {kosten_monat:.0f}</div>
+            </div>
+            """
+            top_cols[idx].markdown(card_html, unsafe_allow_html=True)
+
+    display_df = ranking_df[[c for c in alle_spalten if c in ranking_df.columns]].copy()
+
+    # Leasingfaktor als Dezimalwert (0,9 statt 0,009)
+    if "Leasingrate_Faktor" in display_df.columns:
+        display_df["Leasingrate_Faktor"] = display_df["Leasingrate_Faktor"] * 100
+
+    # Verbrauchswerte auf eine Nachkommastelle bringen (z. B. 7.0)
+    for col in ("Verbrauch_L_100", "Verbrauch_kWh_100"):
+        if col in display_df.columns:
+            display_df[col] = display_df[col].apply(
+                lambda v: round(float(v), 1) if pd.notna(v) else v
+            )
+
+    # Kosten aufrunden (Ganzzahlen) für Anzeige
+    kosten_spalten = [
+        "UVP",
+        "Leasingkosten / Monat",
+        "Leasingkosten (Gesamt)",
+        "Spritkosten / Monat",
+        "Spritkosten (Gesamt)",
+        "Gesamtkosten / Monat",
+        "Kosten (Gesamt)",
+    ]
+    for col in kosten_spalten:
+        if col in display_df.columns:
+            display_df[col] = display_df[col].apply(
+                lambda v: math.ceil(float(v)) if pd.notna(v) else v
+            )
+
+    # Leasingoption nicht anzeigen
+    display_df = display_df.drop(columns=["Leasingoption"], errors="ignore")
+
+    currency_cols = [
+        "UVP",
+        "Leasingkosten / Monat",
+        "Leasingkosten (Gesamt)",
+        "Spritkosten / Monat",
+        "Spritkosten (Gesamt)",
+        "Gesamtkosten / Monat",
+        "Kosten (Gesamt)",
+    ]
+
+    column_config = {"Bild": st.column_config.ImageColumn()}
+    column_config.update(
+        {
+            col: st.column_config.NumberColumn(format="€%.0f")
+            for col in currency_cols
+            if col in display_df.columns
+        }
     )
+    if "Freikilometer" in display_df.columns:
+        column_config["Freikilometer"] = st.column_config.NumberColumn(format="%.0f")
+
+    for col in ("Verbrauch_L_100", "Verbrauch_kWh_100"):
+        if col in display_df.columns:
+            column_config[col] = st.column_config.NumberColumn(format="%.1f")
+
+    if "Leasingrate_Faktor" in display_df.columns:
+        column_config["Leasingrate_Faktor"] = st.column_config.NumberColumn(format="%.1f")
+
+    st.markdown("<div style='height:16px;'></div>", unsafe_allow_html=True)
+    with st.expander("Ausführliches Ranking"):
+        st.dataframe(
+            display_df,
+            column_config=column_config,
+            use_container_width=True,
+            hide_index=True,
+        )
 
     st.caption(
         "\\* Fahrzeug- und Leasingdaten basieren auf internen Datenquellen "
@@ -511,7 +740,7 @@ if st.session_state["ranking"]:
 else:
     st.info("Es befindet sich noch kein Fahrzeug im Ranking.")
 
-st.markdown("---")
+st.markdown(divider_html, unsafe_allow_html=True)
 
 
 # =====================================================================
@@ -519,172 +748,130 @@ st.markdown("---")
 # =====================================================================
 
 st.markdown(
-    "<h2 style='text-align: center;'>🚘 Autoauswahl</h2>",
+    f"<h2 style='text-align: center; color:{theme_text}; letter-spacing:0.02em;'>🚘 Autoauswahl</h2>",
     unsafe_allow_html=True,
 )
-
 cars_per_row = 4
 rows = 2
 
 for row_idx in range(rows):
-    auto_cols = st.columns(cars_per_row)
+    auto_cols = st.columns(cars_per_row, border=False)
 
     for i in range(cars_per_row):
         car_index = row_idx * cars_per_row + i
+        slot_id = car_index + 1
 
         with auto_cols[i]:
-            st.markdown(
-                f"<h2 style='text-align: center; font-size:20px;'>Auto {car_index + 1}</h2>",
-                unsafe_allow_html=True,
-            )
+            with stylable_container(
+                key=f"car_card_{slot_id}",
+                css_styles=f"""
+                    {{
+                        border: 2px solid {card_border};
+                        border-radius: 12px;
+                        padding: 16px;
+                        background: {secondary_bg if dark_mode else "#ffffff"};
+                        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+                        width: 100%;
+                        display: block;
+                    }}
+                """,
+            ):
+                st.markdown(
+                    f"<h2 style='text-align: center; font-size:20px; color:{theme_text}; margin-top:0;'>Auto {slot_id}</h2>",
+                    unsafe_allow_html=True,
+                )
 
-            # Modell-Selectbox (Auswahlpflicht)
-            modelle = autos["Modell"].unique()
-            selected_model = st.selectbox(
-                "Modell",
-                modelle,
-                index=None,
-                placeholder="Bitte wählen",
-                key=f"modell_{car_index}",
-            )
+                # Modell-Selectbox (Auswahlpflicht)
+                modelle = autos["Modell"].unique()
+                selected_model = st.selectbox(
+                    "Modell",
+                    modelle,
+                    index=None,
+                    placeholder="Bitte wählen",
+                    key=f"modell_{slot_id}",
+                )
 
-            # Ausstattungslinie, auto-select bei genau einer Option
-            if selected_model:
-                variationen = autos[autos["Modell"] == selected_model][
-                    "Ausstattungslinie"
-                ].unique()
-            else:
-                variationen = []
+                # Ausstattungslinie, auto-select bei genau einer Option
+                if selected_model:
+                    variationen = autos[autos["Modell"] == selected_model][
+                        "Ausstattungslinie"
+                    ].unique()
+                else:
+                    variationen = []
 
-            selected_variation = auto_selectbox_single(
-                "Ausstattungslinie",
-                variationen,
-                key=f"variation_{car_index}",
-                placeholder="Bitte wählen",
-            )
+                selected_variation = auto_selectbox_single(
+                    "Ausstattungslinie",
+                    variationen,
+                    key=f"variation_{slot_id}",
+                    placeholder="Bitte wählen",
+                )
 
-            # Motor, auto-select bei genau einer Option
-            if selected_model and selected_variation:
-                motoren = autos[
-                    (autos["Modell"] == selected_model)
-                    & (autos["Ausstattungslinie"] == selected_variation)
-                ]["Motor"].unique()
-            else:
-                motoren = []
+                # Motor, auto-select bei genau einer Option
+                if selected_model and selected_variation:
+                    motoren = autos[
+                        (autos["Modell"] == selected_model)
+                        & (autos["Ausstattungslinie"] == selected_variation)
+                    ]["Motor"].unique()
+                else:
+                    motoren = []
 
-            selected_engine = auto_selectbox_single(
-                "Motor",
-                motoren,
-                key=f"motor_{car_index}",
-                placeholder="Bitte wählen",
-            )
+                selected_engine = auto_selectbox_single(
+                    "Motor",
+                    motoren,
+                    key=f"motor_{slot_id}",
+                    placeholder="Bitte wählen",
+                )
 
-            # Motorinfos vorbereiten
-            motor_info = pd.DataFrame()
-            has_motor = False
-            bild = ""
-            kraftstoff = None
-            verbrauch_l_default = 0.0
-            verbrauch_kwh_default = 0.0
-            uvp_default = 0
+                # Motorinfos vorbereiten
+                motor_info = pd.DataFrame()
+                has_motor = False
+                bild = ""
+                kraftstoff = None
+                verbrauch_l_default = 0.0
+                verbrauch_kwh_default = 0.0
+                uvp_default = 0
 
-            if selected_engine:
-                motor_info = autos[
-                    (autos["Modell"] == selected_model)
-                    & (autos["Ausstattungslinie"] == selected_variation)
-                    & (autos["Motor"] == selected_engine)
-                ]
-                if not motor_info.empty:
-                    has_motor = True
-                    row_info = motor_info.iloc[0]
-                    bild = row_info.get("Bild", "")
-                    kraftstoff = row_info["Kraftstoff"]
-                    uvp_default = int(row_info.get("Preis", 0))
-                    verbrauch_l_default = float(row_info["l/100km"])
-                    verbrauch_kwh_default = float(row_info["kWh/100km"])
+                if selected_engine:
+                    motor_info = autos[
+                        (autos["Modell"] == selected_model)
+                        & (autos["Ausstattungslinie"] == selected_variation)
+                        & (autos["Motor"] == selected_engine)
+                    ]
+                    if not motor_info.empty:
+                        has_motor = True
+                        row_info = motor_info.iloc[0]
+                        bild = row_info.get("Bild", "")
+                        kraftstoff = row_info["Kraftstoff"]
+                        uvp_default = int(row_info.get("Preis", 0))
+                        verbrauch_l_default = float(row_info["l/100km"])
+                        verbrauch_kwh_default = float(row_info["kWh/100km"])
 
-            # UVP-Eingabe (bei fehlenden Daten deaktiviert)
-            uvp = st.number_input(
-                "UVP (in €)",
-                value=uvp_default,
-                min_value=0,
-                step=1000,
-                key=f"uvp_{car_index}",
-                disabled=not has_motor,
-            )
+                # UVP-Eingabe (bei fehlenden Daten deaktiviert)
+                uvp = st.number_input(
+                    "UVP (in €)",
+                    value=uvp_default,
+                    min_value=0,
+                    step=1000,
+                    key=f"uvp_{slot_id}",
+                    disabled=not has_motor,
+                )
 
-            # Kraftstoff + Verbrauchseingaben
-            sprit_arten = ["Super E10", "Super E5", "Super+"]
-            selected_sprit = None
-            verbrauch_input = 0.0       # L/100km
-            verbrauch_input_strom = 0.0 # kWh/100km
+                # Kraftstoff + Verbrauchseingaben
+                sprit_arten = ["Super E10", "Super E5", "Super+"]
+                selected_sprit = None
+                verbrauch_input = 0.0       # L/100km
+                verbrauch_input_strom = 0.0 # kWh/100km
 
-            if has_motor:
-                kf = kraftstoff.lower()
+                if has_motor:
+                    kf = kraftstoff.lower()
 
-                if kf == "benzin":
-                    selected_sprit = auto_selectbox_single(
-                        "Kraftstoff",
-                        sprit_arten,
-                        key=f"sprit_{car_index}",
-                        placeholder="Bitte wählen",
-                    )
-                    st.markdown("**Verbrenner:**")
-                    verbrauch_input = st.number_input(
-                        "Verbrauch (L/100km)",
-                        value=round(verbrauch_l_default, 1),
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_l_{car_index}",
-                    )
-                    verbrauch_input_strom = 0.0
-
-                elif kf == "diesel":
-                    selected_sprit = auto_selectbox_single(
-                        "Kraftstoff",
-                        ["Diesel"],
-                        key=f"sprit_{car_index}",
-                        placeholder="Bitte wählen",
-                    )
-                    st.markdown("**Verbrenner:**")
-                    verbrauch_input = st.number_input(
-                        "Verbrauch (L/100km)",
-                        value=round(verbrauch_l_default, 1),
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_l_{car_index}",
-                    )
-                    verbrauch_input_strom = 0.0
-
-                elif kf == "elektro":
-                    selected_sprit = auto_selectbox_single(
-                        "Kraftstoff",
-                        ["Strom"],
-                        key=f"sprit_{car_index}",
-                        placeholder="Bitte wählen",
-                    )
-                    verbrauch_input = 0.0
-                    st.markdown("**E-Motor:**")
-                    verbrauch_input_strom = st.number_input(
-                        "Verbrauch (kWh/100km)",
-                        value=round(verbrauch_kwh_default, 1),
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_kwh_{car_index}",
-                    )
-
-                elif kf in ("elektro/hybrid", "hybrid"):
-                    selected_sprit = auto_selectbox_single(
-                        "Kraftstoff",
-                        sprit_arten,
-                        key=f"sprit_{car_index}",
-                        placeholder="Bitte wählen",
-                    )
-                    c1, c2 = st.columns(2)
-                    with c1:
+                    if kf == "benzin":
+                        selected_sprit = auto_selectbox_single(
+                            "Kraftstoff",
+                            sprit_arten,
+                            key=f"sprit_{slot_id}",
+                            placeholder="Bitte wählen",
+                        )
                         st.markdown("**Verbrenner:**")
                         verbrauch_input = st.number_input(
                             "Verbrauch (L/100km)",
@@ -692,9 +879,36 @@ for row_idx in range(rows):
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
-                            key=f"verbrauch_l_{car_index}",
+                            key=f"verbrauch_l_{slot_id}",
                         )
-                    with c2:
+                        verbrauch_input_strom = 0.0
+
+                    elif kf == "diesel":
+                        selected_sprit = auto_selectbox_single(
+                            "Kraftstoff",
+                            ["Diesel"],
+                            key=f"sprit_{slot_id}",
+                            placeholder="Bitte wählen",
+                        )
+                        st.markdown("**Verbrenner:**")
+                        verbrauch_input = st.number_input(
+                            "Verbrauch (L/100km)",
+                            value=round(verbrauch_l_default, 1),
+                            min_value=0.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"verbrauch_l_{slot_id}",
+                        )
+                        verbrauch_input_strom = 0.0
+
+                    elif kf == "elektro":
+                        selected_sprit = auto_selectbox_single(
+                            "Kraftstoff",
+                            ["Strom"],
+                            key=f"sprit_{slot_id}",
+                            placeholder="Bitte wählen",
+                        )
+                        verbrauch_input = 0.0
                         st.markdown("**E-Motor:**")
                         verbrauch_input_strom = st.number_input(
                             "Verbrauch (kWh/100km)",
@@ -702,227 +916,286 @@ for row_idx in range(rows):
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
-                            key=f"verbrauch_kwh_{car_index}",
+                            key=f"verbrauch_kwh_{slot_id}",
+                        )
+
+                    elif kf in ("elektro/hybrid", "hybrid"):
+                        selected_sprit = auto_selectbox_single(
+                            "Kraftstoff",
+                            sprit_arten,
+                            key=f"sprit_{slot_id}",
+                            placeholder="Bitte wählen",
+                        )
+                        c1, c2 = st.columns(2)
+                        with c1:
+                            st.markdown("**Verbrenner:**")
+                            verbrauch_input = st.number_input(
+                                "Verbrauch (L/100km)",
+                                value=round(verbrauch_l_default, 1),
+                                min_value=0.0,
+                                step=0.1,
+                                format="%.1f",
+                                key=f"verbrauch_l_{slot_id}",
+                            )
+                        with c2:
+                            st.markdown("**E-Motor:**")
+                            verbrauch_input_strom = st.number_input(
+                                "Verbrauch (kWh/100km)",
+                                value=round(verbrauch_kwh_default, 1),
+                                min_value=0.0,
+                                step=0.1,
+                                format="%.1f",
+                                key=f"verbrauch_kwh_{slot_id}",
+                            )
+                    else:
+                        # Unbekannter Kraftstoff → Eingaben werden deaktiviert
+                        st.selectbox(
+                            "Kraftstoff",
+                            [],
+                            index=None,
+                            placeholder="Keine Daten",
+                            key=f"sprit_{slot_id}",
+                            disabled=True,
+                        )
+                        verbrauch_input = st.number_input(
+                            "Verbrauch (L/100km)",
+                            value=0.0,
+                            min_value=0.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"verbrauch_l_{slot_id}",
+                            disabled=True,
+                        )
+                        verbrauch_input_strom = st.number_input(
+                            "Verbrauch (kWh/100km)",
+                            value=0.0,
+                            min_value=0.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"verbrauch_kwh_{slot_id}",
+                            disabled=True,
                         )
                 else:
-                    # Unbekannter Kraftstoff → Eingaben werden deaktiviert
+                    # Ohne Motor-Auswahl werden Verbrauchs-Eingaben deaktiviert dargestellt
                     st.selectbox(
                         "Kraftstoff",
                         [],
                         index=None,
-                        placeholder="Keine Daten",
-                        key=f"sprit_{car_index}",
+                        placeholder="Bitte zuerst Motor wählen",
+                        key=f"sprit_{slot_id}",
                         disabled=True,
                     )
-                    verbrauch_input = st.number_input(
-                        "Verbrauch (L/100km)",
-                        value=0.0,
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_l_{car_index}",
-                        disabled=True,
-                    )
-                    verbrauch_input_strom = st.number_input(
-                        "Verbrauch (kWh/100km)",
-                        value=0.0,
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_kwh_{car_index}",
-                        disabled=True,
-                    )
-            else:
-                # Ohne Motor-Auswahl werden Verbrauchs-Eingaben deaktiviert dargestellt
-                st.selectbox(
-                    "Kraftstoff",
-                    [],
-                    index=None,
-                    placeholder="Bitte zuerst Motor wählen",
-                    key=f"sprit_{car_index}",
-                    disabled=True,
-                )
-                c1, c2 = st.columns(2)
-                with c1:
-                    st.markdown("**Verbrenner:**")
-                    verbrauch_input = st.number_input(
-                        "Verbrauch (L/100km)",
-                        value=0.0,
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_l_{car_index}",
-                        disabled=True,
-                    )
-                with c2:
-                    st.markdown("**E-Motor:**")
-                    verbrauch_input_strom = st.number_input(
-                        "Verbrauch (kWh/100km)",
-                        value=0.0,
-                        min_value=0.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"verbrauch_kwh_{car_index}",
-                        disabled=True,
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        st.markdown("**Verbrenner:**")
+                        verbrauch_input = st.number_input(
+                            "Verbrauch (L/100km)",
+                            value=0.0,
+                            min_value=0.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"verbrauch_l_{slot_id}",
+                            disabled=True,
+                        )
+                    with c2:
+                        st.markdown("**E-Motor:**")
+                        verbrauch_input_strom = st.number_input(
+                            "Verbrauch (kWh/100km)",
+                            value=0.0,
+                            min_value=0.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"verbrauch_kwh_{slot_id}",
+                            disabled=True,
+                        )
+
+                # Leasingoptionen nach Kategorie des Motors filtern
+                passende_leasing = pd.DataFrame()
+                if has_motor:
+                    kategorie = motor_info["Kategorie"].values[0]  # z. B. Verbrenner / Elektro/Hybrid
+                    motor_str = motor_info["Motor"].values[0]
+
+                    bedingung_kraftstoff, bedingung_modell = find_leasing_bedingung(
+                        leasing, kategorie, selected_model
                     )
 
-            # Leasingoptionen nach Kategorie des Motors filtern
-            passende_leasing = pd.DataFrame()
-            if has_motor:
-                kategorie = motor_info["Kategorie"].values[0]  # z. B. Verbrenner / Elektro/Hybrid
-                motor_str = motor_info["Motor"].values[0]
+                    passende_leasing = leasing[
+                        (leasing["Bedingung Kraftstoff"] == bedingung_kraftstoff)
+                        & (leasing["Bedingung Modell"] == bedingung_modell)
+                    ]
 
-                bedingung_kraftstoff, bedingung_modell = find_leasing_bedingung(
-                    leasing, kategorie, selected_model
+                leasing_options = (
+                    passende_leasing["Leasingoption"].unique()
+                    if not passende_leasing.empty
+                    else []
                 )
 
-                passende_leasing = leasing[
-                    (leasing["Bedingung Kraftstoff"] == bedingung_kraftstoff)
-                    & (leasing["Bedingung Modell"] == bedingung_modell)
-                ]
+                selected_leasing = auto_selectbox_single(
+                    "Leasingoption",
+                    leasing_options,
+                    key=f"leasing_{slot_id}",
+                    placeholder="Bitte wählen",
+                )
 
-            leasing_options = (
-                passende_leasing["Leasingoption"].unique()
-                if not passende_leasing.empty
-                else []
-            )
+                # Freikilometer / Laufzeit / Rate für Kostenberechnung
+                standard_km = 15000
+                laufzeit = 6
+                standard_rate = 0.9
 
-            selected_leasing = auto_selectbox_single(
-                "Leasingoption",
-                leasing_options,
-                key=f"leasing_{car_index}",
-                placeholder="Bitte wählen",
-            )
+                c1, c2, c3 = st.columns(3)
 
-            # Freikilometer / Laufzeit / Rate für Kostenberechnung
-            standard_km = 15000
-            laufzeit = 6
-            standard_rate = 0.9
-
-            c1, c2, c3 = st.columns(3)
-
-            if selected_leasing:
-                leasing_row_pre = passende_leasing[
-                    passende_leasing["Leasingoption"] == selected_leasing
-                ]
-                if not leasing_row_pre.empty:
-                    leasing_row_pre = leasing_row_pre.iloc[0]
-                    standard_km = leasing_row_pre["Freikilometer"]
-                    laufzeit = int(leasing_row_pre["Laufzeit"])
-                    standard_rate = float(leasing_row_pre["Leasingrate"])
-
-                with c1:
-                    adjusted_rate = st.number_input(
-                        "Rate anpassen",
-                        value=float(standard_rate),
-                        min_value=0.1,
-                        max_value=1.0,
-                        step=0.1,
-                        format="%.1f",
-                        key=f"rate_{car_index}",
-                    )
-                with c2:
-                    adjusted_time = st.number_input(
-                        "Laufzeit anpassen",
-                        value=int(laufzeit),
-                        min_value=6,
-                        max_value=12,
-                        step=6,
-                        key=f"time_{car_index}",
-                    )
-                with c3:
-                    adjusted_km = st.number_input(
-                        "Kilometer anpassen",
-                        value=int(standard_km),
-                        min_value=0,
-                        step=1000,
-                        key=f"km_{car_index}",
-                    )
-            else:
-                with c1:
-                    adjusted_rate = st.number_input(
-                        "Rate anpassen",
-                        value=0.0,
-                        format="%.1f",
-                        key=f"rate_{car_index}",
-                        disabled=True,
-                    )
-                with c2:
-                    adjusted_time = st.number_input(
-                        "Laufzeit anpassen",
-                        value=0,
-                        key=f"time_{car_index}",
-                        disabled=True,
-                    )
-                with c3:
-                    adjusted_km = st.number_input(
-                        "Kilometer anpassen",
-                        value=0,
-                        key=f"km_{car_index}",
-                        disabled=True,
-                    )
-
-            # Beschreibungstext
-            st.markdown("**Optional:**")
-            description = st.text_area(
-                "Kurze Beschreibung des Fahrzeugs",
-                placeholder="z.B. besondere Ausstattung, Farbe, Optionen ...",
-                max_chars=100,
-                key=f"description_{car_index}",
-            )
-
-            # Fahrzeug ins Ranking übernehmen
-            if st.button("Ranking aktualisieren", key=f"rank_{car_index}"):
-                if not (
-                    selected_model
-                    and selected_variation
-                    and selected_engine
-                    and selected_leasing
-                    and has_motor
-                ):
-                    st.warning(
-                        "Für dieses Fahrzeug werden Modell, Ausstattungslinie, Motor und Leasingoption benötigt."
-                    )
-                else:
-                    leasing_row = passende_leasing[
+                if selected_leasing:
+                    leasing_row_pre = passende_leasing[
                         passende_leasing["Leasingoption"] == selected_leasing
                     ]
-                    if leasing_row.empty:
-                        st.error(
-                            "Leasingdaten nicht gefunden. Prüfen, ob leasing.csv und 'Leasingoption' zusammenpassen."
-                        )
-                    else:
-                        leasingrate_faktor = adjusted_rate / 100  # z. B. 0,9 → 0,009
-                        laufzeit_monate = adjusted_time
-                        freikilometer = adjusted_km
+                    if not leasing_row_pre.empty:
+                        leasing_row_pre = leasing_row_pre.iloc[0]
+                        standard_km = leasing_row_pre["Freikilometer"]
+                        laufzeit = int(leasing_row_pre["Laufzeit"])
+                        standard_rate = float(leasing_row_pre["Leasingrate"])
 
-                        # bestehenden Eintrag für diesen Slot entfernen
+                    with c1:
+                        adjusted_rate = st.number_input(
+                            "Rate",
+                            value=float(standard_rate),
+                            min_value=0.1,
+                            max_value=1.0,
+                            step=0.1,
+                            format="%.1f",
+                            key=f"rate_{slot_id}",
+                        )
+                    with c2:
+                        adjusted_time = st.number_input(
+                            "Laufzeit",
+                            value=int(laufzeit),
+                            min_value=6,
+                            max_value=12,
+                            step=6,
+                            key=f"time_{slot_id}",
+                        )
+                    with c3:
+                        adjusted_km = st.number_input(
+                            "Kilometer",
+                            value=int(standard_km),
+                            min_value=0,
+                            step=1000,
+                            key=f"km_{slot_id}",
+                        )
+                else:
+                    with c1:
+                        adjusted_rate = st.number_input(
+                            "Rate",
+                            value=0.0,
+                            format="%.1f",
+                            key=f"rate_{slot_id}",
+                            disabled=True,
+                        )
+                    with c2:
+                        adjusted_time = st.number_input(
+                            "Laufzeit",
+                            value=0,
+                            key=f"time_{slot_id}",
+                            disabled=True,
+                        )
+                    with c3:
+                        adjusted_km = st.number_input(
+                            "Kilometer",
+                            value=0,
+                            key=f"km_{slot_id}",
+                            disabled=True,
+                        )
+
+                # Beschreibungstext
+                st.markdown("**Optional:**")
+                description = st.text_area(
+                    "Kurze Beschreibung des Fahrzeugs",
+                    placeholder="z.B. besondere Ausstattung, Farbe, Optionen ...",
+                    max_chars=100,
+                    key=f"description_{slot_id}",
+                )
+
+                btn_col1, btn_col2 = st.columns(2)
+                with btn_col1:
+                    if st.button(
+                        "Ranking aktualisieren",
+                        key=f"rank_{slot_id}",
+                        type="primary",
+                        use_container_width=True,
+                    ):
+                        if not (
+                            selected_model
+                            and selected_variation
+                            and selected_engine
+                            and selected_leasing
+                            and has_motor
+                        ):
+                            st.warning(
+                                "Für dieses Fahrzeug werden Modell, Ausstattungslinie, Motor und Leasingoption benötigt."
+                            )
+                        else:
+                            leasing_row = passende_leasing[
+                                passende_leasing["Leasingoption"] == selected_leasing
+                            ]
+                            if leasing_row.empty:
+                                st.error(
+                                    "Leasingdaten nicht gefunden. Prüfen, ob leasing.csv und 'Leasingoption' zusammenpassen."
+                                )
+                            else:
+                                leasingrate_faktor = adjusted_rate / 100  # z. B. 0,9 → 0,009
+                                laufzeit_monate = adjusted_time
+                                freikilometer = adjusted_km
+
+                                # bestehenden Eintrag für diesen Slot entfernen
+                                st.session_state["ranking"] = [
+                                    r
+                                    for r in st.session_state["ranking"]
+                                    if r.get("Slot") != slot_id
+                                ]
+
+                                # neuen Eintrag hinzufügen
+                                st.session_state["ranking"].append(
+                                    {
+                                        "Bild": bild,
+                                        "Slot": slot_id,
+                                        "Modell": selected_model,
+                                        "Ausstattungslinie": selected_variation,
+                                        "Motor": selected_engine,
+                                        "UVP": uvp,
+                                        "Leasingoption": selected_leasing,
+                                        "Freikilometer": freikilometer,
+                                        "Kraftstoff": kraftstoff,
+                                        "Sprit": selected_sprit,
+                                        "Beschreibung": description,
+                                        "Verbrauch_L_100": verbrauch_input,
+                                        "Verbrauch_kWh_100": verbrauch_input_strom,
+                                        "Laufzeit_Monate": laufzeit_monate,
+                                        "Leasingrate_Faktor": leasingrate_faktor,
+                                    }
+                                )
+
+                                st.session_state["ranking_updated"] = True
+                                st.session_state["ranking_message_slot"] = slot_id
+                                st.session_state["ranking_message_text"] = "Ranking wurde aktualisiert."
+                                st.rerun()
+                with btn_col2:
+                    if st.button(
+                        "Aus Ranking entfernen",
+                        key=f"remove_{slot_id}",
+                        type="secondary",
+                        use_container_width=True,
+                    ):
+                        before = len(st.session_state["ranking"])
                         st.session_state["ranking"] = [
-                            r
-                            for r in st.session_state["ranking"]
-                            if r.get("Slot") != car_index + 1
+                            r for r in st.session_state["ranking"] if r.get("Slot") != slot_id
                         ]
+                        if len(st.session_state["ranking"]) != before:
+                            st.session_state["ranking_updated"] = True
+                            st.session_state["ranking_message_slot"] = slot_id
+                            st.session_state["ranking_message_text"] = "Fahrzeug wurde entfernt."
+                            clear_slot_state(slot_id)
+                            st.rerun()
 
-                        # neuen Eintrag hinzufügen
-                        st.session_state["ranking"].append(
-                            {
-                                "Bild": bild,
-                                "Slot": car_index + 1,
-                                "Modell": selected_model,
-                                "Ausstattungslinie": selected_variation,
-                                "Motor": selected_engine,
-                                "UVP": uvp,
-                                "Leasingoption": selected_leasing,
-                                "Freikilometer": freikilometer,
-                                "Kraftstoff": kraftstoff,
-                                "Sprit": selected_sprit,
-                                "Beschreibung": description,
-                                "Verbrauch_L_100": verbrauch_input,
-                                "Verbrauch_kWh_100": verbrauch_input_strom,
-                                "Laufzeit_Monate": laufzeit_monate,
-                                "Leasingrate_Faktor": leasingrate_faktor,
-                            }
-                        )
-
-                        st.success("Fahrzeug im Ranking gespeichert.")
-                        st.rerun()
+                    if st.session_state.get("ranking_message_slot") == slot_id:
+                        st.info(st.session_state.get("ranking_message_text", ""))
+                        st.session_state["ranking_message_slot"] = None
+                        st.session_state["ranking_message_text"] = ""

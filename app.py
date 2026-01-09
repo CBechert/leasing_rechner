@@ -424,25 +424,38 @@ st.markdown(
     [data-testid="stHeader"] {{
         background: transparent;
     }}
-    button[data-testid="baseButton-primary"] {{
-        background: {PRIMARY_GREEN};
-        color: #ffffff;
+    button[data-testid="baseButton-primary"],
+    button[kind="primary"],
+    div[data-testid="stButton"] button[kind="primary"] {{
+        background: {PRIMARY_GREEN} !important;
+        color: #ffffff !important;
         border-radius: 8px;
-        border: none;
+        border: none !important;
+        box-shadow: none !important;
+        margin-top: 20px;
     }}
-    button[data-testid="baseButton-primary"]:hover {{
-        background: {PRIMARY_DEEP};
-        color: #ffffff;
+    button[data-testid="baseButton-primary"]:hover,
+    button[kind="primary"]:hover {{
+        background: {PRIMARY_DEEP} !important;
+        color: #ffffff !important;
+        margin-top: 20px;
     }}
     button[data-testid="baseButton-secondary"] {{
         background: {SECONDARY_CORAL};
         color: #0f1f2f;
         border-radius: 8px;
         border: none;
+        margin-top: 20px;
     }}
-    button[data-testid="baseButton-secondary"]:hover {{
+    button[data-testid="baseButton-secondary"]:hover,
+    button[kind="secondary"]:hover {{
         background: {TRAFFIC_RED};
         color: #ffffff;
+        margin-top: 20px;
+    }}
+    button[kind="secondary"],
+    div[data-testid=\"stButton\"] button {{
+        margin-top: 20px !important;
     }}
     .block-container {{
         padding-top: 0.5rem;
@@ -1120,6 +1133,7 @@ for row_idx in range(rows):
                     leasing_options,
                     key=f"leasing_{slot_id}",
                     placeholder="Bitte wählen",
+                    disabled=not bool(has_motor),
                 )
 
                 # Freikilometer / Laufzeit / Rate für Kostenberechnung

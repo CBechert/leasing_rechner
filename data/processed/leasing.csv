@@ -1,9 +1,15 @@
 Leasingoption;Leasingrate;Laufzeit;Freikilometer;Tankguthaben;Bedingung Kraftstoff;Bedingung Modell
-0.9 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;Golf
+0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;Golf
 1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Golf
 
 0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;T-Roc Cabriolet
 0.8 % | 12 Monate  | 30000 km;0.8;12;30000;0;Verbrenner;T-Roc Cabriolet
+
+0.7 % | 6 Monate  | 15000 km;0.7;6;15000;0;Verbrenner;Passat
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Passat
+
+0.8 % | 6 Monate  | 15000 km;0.8;6;15000;0;Verbrenner;Tayron
+1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Tayron
 
 0.9 % | 6 Monate  | 15000 km;0.9;6;15000;0;Verbrenner;Rest
 1.0 % | 12 Monate  | 30000 km;1.0;12;30000;0;Verbrenner;Rest

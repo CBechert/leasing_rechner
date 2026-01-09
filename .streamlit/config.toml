@@ -9,13 +9,10 @@ secondaryBackgroundColor = "#E7F3F3"    # Helle Tint aus Palette
 textColor = "#0F1F2F"                   # Dunkles Petrol für Text
 font = "sans serif"
 
-<<<<<<< HEAD
-=======
 [theme.light.sidebar]
 backgroundColor = "#F6F8F9"
 borderColor = "#002733"
 
->>>>>>> bf1b075 (Bugfixes & Geldwerter Vorteil)
 # Dark Theme (Primary: Vivid Green, Accent: Electric Neon on dark)
 [theme.dark]
 primaryColor = "#008C82"

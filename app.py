@@ -400,6 +400,37 @@ if "ranking_message_slot" not in st.session_state:
 if "ranking_message_text" not in st.session_state:
     st.session_state["ranking_message_text"] = ""
 
+# Stellt sicher, dass UI-States aus bestehenden Ranking-Einträgen
+# wiederhergestellt werden (z. B. nach einem st.rerun).
+def hydrate_slot_state_from_ranking() -> None:
+    def set_if_missing(key: str, value):
+        if key not in st.session_state and value is not None:
+            st.session_state[key] = value
+
+    for entry in st.session_state.get("ranking", []):
+        slot = entry.get("Slot")
+        if slot is None:
+            continue
+
+        set_if_missing(f"modell_{slot}", entry.get("Modell"))
+        set_if_missing(f"variation_{slot}", entry.get("Ausstattungslinie"))
+        set_if_missing(f"motor_{slot}", entry.get("Motor"))
+        set_if_missing(f"last_motor_{slot}", entry.get("Motor"))
+        set_if_missing(f"uvp_{slot}", int(float(entry.get("UVP", 0))))
+        set_if_missing(f"sprit_{slot}", entry.get("Sprit"))
+        set_if_missing(f"verbrauch_l_{slot}", round(float(entry.get("Verbrauch_L_100", 0.0)), 1))
+        set_if_missing(f"verbrauch_kwh_{slot}", round(float(entry.get("Verbrauch_kWh_100", 0.0)), 1))
+        set_if_missing(f"time_{slot}", int(entry.get("Laufzeit_Monate", 0)))
+        set_if_missing(f"km_{slot}", int(entry.get("Freikilometer", 0)))
+        set_if_missing(
+            f"rate_{slot}",
+            round(float(entry.get("Leasingrate_Faktor", 0.0)) * 100, 1),
+        )
+        set_if_missing(f"description_{slot}", entry.get("Beschreibung", ""))
+        set_if_missing(f"leasing_{slot}", entry.get("Leasingoption"))
+
+hydrate_slot_state_from_ranking()
+
 
 # =====================================================================
 # Header

@@ -129,6 +129,7 @@ def clear_slot_state(slot_id: int) -> None:
         f"modell_{slot_id}",
         f"variation_{slot_id}",
         f"motor_{slot_id}",
+        f"last_motor_{slot_id}",
         f"uvp_{slot_id}",
         f"sprit_{slot_id}",
         f"verbrauch_l_{slot_id}",
@@ -149,6 +150,7 @@ def auto_selectbox_single(
     options,
     key: str,
     placeholder: str | None = None,
+    disabled: bool = False,
 ):
     """
     Selectbox-Helfer mit Sonderfall für Kraftstoff und Auto-Select bei genau einer Option.
@@ -162,8 +164,20 @@ def auto_selectbox_single(
           diese Option wird im Session-State gesetzt
       - >= 2 Optionen:
           Selectbox startet leer mit Placeholder
+      - disabled:
+          Selectbox bleibt geschlossen, setzt keinen Wert
     """
     options = list(options) if options is not None else []
+
+    if disabled:
+        return st.selectbox(
+            label,
+            options,
+            index=None,
+            placeholder=placeholder,
+            key=key,
+            disabled=True,
+        )
 
     # Spezieller Ablauf für Kraftstoff
     if label == "Kraftstoff":
@@ -298,7 +312,27 @@ def berechne_kosten(row: pd.Series) -> pd.Series:
     verbrauch_kwh = float(row.get("Verbrauch_kWh_100", 0.0))
     sprit = row["Sprit"]
 
-    leasingkosten_pro_monat = uvp * leasingrate_faktor
+    def geldwerter_vorteil_berechnen() -> tuple[float, float]:
+        """
+        Geldwerter Vorteil entsteht nur bei Verbrennern mit Leasingrate < 1 %.
+        Rückgabe:
+          - geldwerter Vorteil pro Monat
+          - Steuerlast-Anteil (1/3) pro Monat, der auf die Rate aufgeschlagen wird
+        """
+        if kraftstoff not in ("benzin", "diesel"):
+            return 0.0, 0.0
+        if leasingrate_faktor >= 0.01:
+            return 0.0, 0.0
+
+        private_nutzung = math.floor(uvp * 0.01)
+        leasingrate_abs = uvp * leasingrate_faktor
+        geldwerter_vorteil = max(private_nutzung - leasingrate_abs, 0.0)
+        steueranteil = geldwerter_vorteil / 3
+        return geldwerter_vorteil, steueranteil
+
+    leasingkosten_pro_monat_basis = uvp * leasingrate_faktor
+    geldwerter_vorteil, steueranteil = geldwerter_vorteil_berechnen()
+    leasingkosten_pro_monat = leasingkosten_pro_monat_basis + steueranteil
 
     if laufzeit <= 0:
         # Laufzeit 0 oder negativ → nur monatliche Leasingkosten, Rest 0
@@ -306,6 +340,8 @@ def berechne_kosten(row: pd.Series) -> pd.Series:
             {
                 "Leasingkosten / Monat": round(leasingkosten_pro_monat, 2),
                 "Leasingkosten (Gesamt)": 0.0,
+                "Geldwerter Vorteil / Monat": round(geldwerter_vorteil, 2),
+                "Steuerlicher Aufschlag / Monat": round(steueranteil, 2),
                 "Spritkosten / Monat": 0.0,
                 "Spritkosten (Gesamt)": 0.0,
                 "Gesamtkosten / Monat": round(leasingkosten_pro_monat, 2),
@@ -339,6 +375,8 @@ def berechne_kosten(row: pd.Series) -> pd.Series:
         {
             "Leasingkosten / Monat": round(leasingkosten_pro_monat, 2),
             "Leasingkosten (Gesamt)": round(leasingkosten_gesamt, 2),
+            "Geldwerter Vorteil / Monat": round(geldwerter_vorteil, 2),
+            "Steuerlicher Aufschlag / Monat": round(steueranteil, 2),
             "Spritkosten / Monat": round(spritkosten_pro_monat, 2),
             "Spritkosten (Gesamt)": round(spritkosten_gesamt, 2),
             "Gesamtkosten / Monat": round(gesamtkosten_pro_monat, 2),
@@ -616,6 +654,8 @@ if st.session_state["ranking"]:
         "Verbrauch (kWh/100km)",
         "Leasingkosten / Monat",
         "Leasingkosten (Gesamt)",
+        "Geldwerter Vorteil / Monat",
+        "Steuerlicher Aufschlag / Monat",
         "Spritkosten / Monat",
         "Spritkosten (Gesamt)",
         "Gesamtkosten / Monat",
@@ -692,7 +732,7 @@ if st.session_state["ranking"]:
     # Leasingoption nicht anzeigen
     display_df = display_df.drop(columns=["Leasingoption"], errors="ignore")
 
-    currency_cols = [
+    currency_cols_int = [
         "UVP",
         "Leasingkosten / Monat",
         "Leasingkosten (Gesamt)",
@@ -706,10 +746,17 @@ if st.session_state["ranking"]:
     column_config.update(
         {
             col: st.column_config.NumberColumn(format="€%.0f")
-            for col in currency_cols
+            for col in currency_cols_int
             if col in display_df.columns
         }
     )
+    currency_cols_precise = [
+        "Geldwerter Vorteil / Monat",
+        "Steuerlicher Aufschlag / Monat",
+    ]
+    for col in currency_cols_precise:
+        if col in display_df.columns:
+            column_config[col] = st.column_config.NumberColumn(format="€%.2f")
     if "Freikilometer" in display_df.columns:
         column_config["Freikilometer"] = st.column_config.NumberColumn(format="%.0f")
 
@@ -735,6 +782,15 @@ if st.session_state["ranking"]:
         "Es handelt sich um unverbindliche Beispielrechnungen. "
         "Maßgeblich sind die offiziellen Angaben des Herstellers oder Anbieters. "
         "Alle Angaben ohne Gewähr."
+    )
+    st.caption(
+        "\\** Die Nutzung eines Fahrzeugs im MA-Leasing (Fahrzeugüberlassung) unterliegt "
+        "der Lohnsteuer- und Sozialversicherungspflicht. Für die Berechnung wird "
+        "grundsätzlich 1,0 % des UVP/Bruttopreises angesetzt. Liegt die monatliche Rate "
+        "unter 1,0 % der UVP, kann ein geldwerter Vorteil entstehen, der individuell zu "
+        "versteuern ist. Der angezeigte steuerliche Aufschlag nutzt 1/3 des berechneten "
+        "Vorteils als grobe Annahme für die Nettobelastung und kann je nach Steuerklasse, "
+        "Freibeträgen und persönlichen Parametern abweichen."
     )
 
 else:
@@ -804,6 +860,7 @@ for row_idx in range(rows):
                     variationen,
                     key=f"variation_{slot_id}",
                     placeholder="Bitte wählen",
+                    disabled=not bool(selected_model),
                 )
 
                 # Motor, auto-select bei genau einer Option
@@ -820,6 +877,7 @@ for row_idx in range(rows):
                     motoren,
                     key=f"motor_{slot_id}",
                     placeholder="Bitte wählen",
+                    disabled=not bool(selected_variation),
                 )
 
                 # Motorinfos vorbereiten
@@ -842,14 +900,26 @@ for row_idx in range(rows):
                         row_info = motor_info.iloc[0]
                         bild = row_info.get("Bild", "")
                         kraftstoff = row_info["Kraftstoff"]
-                        uvp_default = int(row_info.get("Preis", 0))
+                        uvp_default = int(float(row_info.get("Preis", 0)))
                         verbrauch_l_default = float(row_info["l/100km"])
                         verbrauch_kwh_default = float(row_info["kWh/100km"])
 
+                        last_motor_key = f"last_motor_{slot_id}"
+                        if st.session_state.get(last_motor_key) != selected_engine:
+                            st.session_state[last_motor_key] = selected_engine
+                            st.session_state[f"uvp_{slot_id}"] = uvp_default
+                            st.session_state[f"verbrauch_l_{slot_id}"] = round(
+                                verbrauch_l_default, 1
+                            )
+                            st.session_state[f"verbrauch_kwh_{slot_id}"] = round(
+                                verbrauch_kwh_default, 1
+                            )
+
                 # UVP-Eingabe (bei fehlenden Daten deaktiviert)
+                uvp_value = st.session_state.get(f"uvp_{slot_id}", uvp_default)
                 uvp = st.number_input(
                     "UVP (in €)",
-                    value=uvp_default,
+                    value=uvp_value,
                     min_value=0,
                     step=1000,
                     key=f"uvp_{slot_id}",
@@ -873,9 +943,12 @@ for row_idx in range(rows):
                             placeholder="Bitte wählen",
                         )
                         st.markdown("**Verbrenner:**")
+                        verbrauch_value = st.session_state.get(
+                            f"verbrauch_l_{slot_id}", round(verbrauch_l_default, 1)
+                        )
                         verbrauch_input = st.number_input(
                             "Verbrauch (L/100km)",
-                            value=round(verbrauch_l_default, 1),
+                            value=verbrauch_value,
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
@@ -891,9 +964,12 @@ for row_idx in range(rows):
                             placeholder="Bitte wählen",
                         )
                         st.markdown("**Verbrenner:**")
+                        verbrauch_value = st.session_state.get(
+                            f"verbrauch_l_{slot_id}", round(verbrauch_l_default, 1)
+                        )
                         verbrauch_input = st.number_input(
                             "Verbrauch (L/100km)",
-                            value=round(verbrauch_l_default, 1),
+                            value=verbrauch_value,
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
@@ -910,9 +986,12 @@ for row_idx in range(rows):
                         )
                         verbrauch_input = 0.0
                         st.markdown("**E-Motor:**")
+                        verbrauch_value_strom = st.session_state.get(
+                            f"verbrauch_kwh_{slot_id}", round(verbrauch_kwh_default, 1)
+                        )
                         verbrauch_input_strom = st.number_input(
                             "Verbrauch (kWh/100km)",
-                            value=round(verbrauch_kwh_default, 1),
+                            value=verbrauch_value_strom,
                             min_value=0.0,
                             step=0.1,
                             format="%.1f",
@@ -929,9 +1008,12 @@ for row_idx in range(rows):
                         c1, c2 = st.columns(2)
                         with c1:
                             st.markdown("**Verbrenner:**")
+                            verbrauch_value = st.session_state.get(
+                                f"verbrauch_l_{slot_id}", round(verbrauch_l_default, 1)
+                            )
                             verbrauch_input = st.number_input(
                                 "Verbrauch (L/100km)",
-                                value=round(verbrauch_l_default, 1),
+                                value=verbrauch_value,
                                 min_value=0.0,
                                 step=0.1,
                                 format="%.1f",
@@ -939,9 +1021,12 @@ for row_idx in range(rows):
                             )
                         with c2:
                             st.markdown("**E-Motor:**")
+                            verbrauch_value_strom = st.session_state.get(
+                                f"verbrauch_kwh_{slot_id}", round(verbrauch_kwh_default, 1)
+                            )
                             verbrauch_input_strom = st.number_input(
                                 "Verbrauch (kWh/100km)",
-                                value=round(verbrauch_kwh_default, 1),
+                                value=verbrauch_value_strom,
                                 min_value=0.0,
                                 step=0.1,
                                 format="%.1f",
